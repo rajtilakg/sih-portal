@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KrishiRakshak - SIH Project Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --accent: #10b981;
+      --accent-hover: #059669;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 2.5rem 1rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--primary);
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .hero h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    /* Action Buttons */
+    .actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.85rem 1.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-dashboard {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-dashboard:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-apk {
+      background-color: var(--accent);
+      color: white;
+    }
+
+    .btn-apk:hover {
+      background-color: var(--accent-hover);
+    }
+
+    /* Generic Card */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+    }
+
+    .card h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Problem Statement */
+    .ps-meta {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+
+    .ps-meta span strong {
+      color: var(--text-main);
+    }
+
+    .ps-body {
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    /* Team Grid */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .member-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--card-border);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .lead-card {
+      border-color: rgba(59, 130, 246, 0.4);
+      background: rgba(59, 130, 246, 0.04);
+    }
+
+    .member-name {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .member-role {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Hero / Title -->
+    <header class="hero">
+      <div class="badge">Smart India Hackathon</div>
+      <h1>KrishiRakshak</h1>
+      <p>An integrated solution featuring a real-time web portal and mobile client.</p>
+      
+      <!-- Primary Access Buttons -->
+      <div class="actions">
+        <a href="https://krishirakshak-government-dashboard.onrender.com/" target="_blank" rel="noopener noreferrer" class="btn btn-dashboard">
+          🏛️ Launch Web Dashboard
+        </a>
+
+        <!-- Note: Replace 'app-release.apk' at the end with your exact uploaded asset name if different -->
+        <a href="https://github.com/rajtilakg/KrishiRakshak-Farmer-s-App/releases/download/beta/app-release.apk" class="btn btn-apk">
+          📱 Download APK (22 MB)
+        </a>
+      </div>
+    </header>
+
+    <!-- Problem Statement Card -->
+    <section class="card">
+      <h2>📌 Problem Statement</h2>
+      <div class="ps-meta">
+        <span><strong>ID:</strong> SIH-26131</span>
+        <span><strong>Ministry/Organization:</strong> Government of Maharashtra</span>
+      </div>
+      <div class="ps-body">
+        <p><strong>Early detection and management of crop diseases and pest infestations</strong></p>
+        <p>
+          Farmers often recognise crop diseases or pest infestations only after visible damage has spread. Extension staff may cover large areas, while laboratory diagnosis and expert advice may not be immediately available. Weather, crop stage, variety, soil condition and local pest history influence risk, but these inputs are rarely combined into actionable farm-level alerts. Incorrect diagnosis may lead to delayed treatment, excessive or inappropriate pesticide use, increased cultivation cost, residue concerns, and yield loss. The challenge is to provide timely, reliable, and locally relevant detection, forecasting, and management support.
+        </p>
+        <p>
+          <strong>Expected Solution / Outcome:</strong> A farmer- and extension-worker-friendly crop-health system that supports image-based symptom identification, pest-trap or sensor inputs, weather-based risk forecasting, geospatial hotspot mapping, expert validation, and multilingual advisories. The system should recommend integrated pest and disease management actions, safe input usage, referral to extension or laboratories, and follow-up monitoring.
+        </p>
+      </div>
+    </section>
+
+    <!-- Team Members -->
+    <section class="card">
+      <h2>👥 Team Members</h2>
+      <div class="team-grid" id="teamGrid">
+        <!-- Lead remains static in spot #1 -->
+        <div class="member-card lead-card">
+          <div class="member-name">Rajtilak Gogoi</div>
+          <div class="member-role">Project Lead</div>
+        </div>
+        <!-- Remaining members are shuffled and injected here -->
+      </div>
+    </section>
+
+    <footer>
+      Submitted for Smart India Hackathon &bull; Built with focus on accessibility &amp; performance
+    </footer>
+  </div>
+
+  <script>
+    // List of peers to shuffle
+    const members = [
+      { name: "Agrim", role: "React Developer" },
+      { name: "Arpit", role: "Frontend / UI/UX" },
+      { name: "Atharv", role: "Backend / API" },
+      { name: "Harish", role: "Legal" },
+      { name: "Anshikha", role: "Research / Testing" }
+    ];
+
+    // Fisher-Yates shuffle algorithm
+    for (let i = members.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [members[i], members[j]] = [members[j], members[i]];
+    }
+
+    // Append shuffled members into the grid
+    const grid = document.getElementById("teamGrid");
+    members.forEach(member => {
+      const card = document.createElement("div");
+      card.className = "member-card";
+      card.innerHTML = `
+        <div class="member-name">${member.name}</div>
+        <div class="member-role">${member.role}</div>
+      `;
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>
