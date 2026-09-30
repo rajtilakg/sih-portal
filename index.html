@@ -113,6 +113,18 @@
       background-color: var(--accent-hover);
     }
 
+    .btn-secondary {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid var(--card-border);
+    }
+
+    .btn-secondary:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
     /* Generic Card */
     .card {
       background: var(--card-bg);
@@ -206,6 +218,14 @@
         <!-- Note: Replace 'app-release.apk' at the end with your exact uploaded asset name if different -->
         <a href="https://github.com/rajtilakg/KrishiRakshak-Farmer-s-App/releases/download/release/KrishiRakshak.apk" class="btn btn-apk">
           📱 Download APK (15 MB)
+        </a>
+
+        <a href="#architecture" class="btn btn-secondary">
+          🏗️ View Detailed Architecture
+        </a>
+
+        <a href="#demo" class="btn btn-secondary">
+          🎥 View Detailed Demo
         </a>
       </div>
     </header>
