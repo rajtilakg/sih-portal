@@ -16,44 +16,7 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
 
   <!-- Mermaid.js for Vector Architecture Diagrams -->
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-  <script>
-    mermaid.initialize({
-      startOnLoad: false,
-      theme: 'base',
-      themeVariables: {
-        darkMode: true,
-        background: '#0a0f1d',
-        primaryColor: '#1e293b',
-        primaryTextColor: '#f8fafc',
-        primaryBorderColor: '#3b82f6',
-        lineColor: '#60a5fa',
-        secondaryColor: '#0f172a',
-        tertiaryColor: '#111827',
-        clusterBkg: '#0d1527',
-        clusterBorder: '#475569',
-        defaultLinkColor: '#60a5fa',
-        titleColor: '#93c5fd',
-        edgeLabelBackground: '#0b0f19',
-        nodeTextColor: '#f8fafc',
-        mainBkg: '#1e293b',
-        nodeBorder: '#3b82f6'
-      },
-      flowchart: { 
-        curve: 'basis',
-        useMaxWidth: false,
-        htmlLabels: true
-      },
-      sequence: {
-        useMaxWidth: false,
-        actorMargin: 50,
-        boxMargin: 10,
-        boxTextMargin: 5,
-        noteMargin: 10,
-        messageMargin: 35
-      }
-    });
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
 
   <style>
     :root {
@@ -103,7 +66,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(9, 13, 22, 0.9);
+      background: rgba(9, 13, 22, 0.92);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--card-border);
       padding: 0.75rem 1.5rem;
@@ -403,7 +366,7 @@
       margin-top: 0.25rem;
     }
 
-    /* Diagram Containers with Pan-Zoom Toolbar */
+    /* Diagram Containers with Robust Pan-Zoom Toolbar */
     .diagram-container {
       background: #080d18;
       border: 1px solid var(--card-border);
@@ -444,44 +407,43 @@
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--card-border);
       color: #cbd5e1;
-      padding: 0.3rem 0.65rem;
+      padding: 0.35rem 0.75rem;
       border-radius: 0.35rem;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.15s;
     }
 
     .btn-diag:hover {
-      background: rgba(59, 130, 246, 0.2);
+      background: rgba(59, 130, 246, 0.25);
       border-color: #3b82f6;
       color: #fff;
     }
 
-    .diagram-viewport {
+    .diagram-scroll-window {
       width: 100%;
       min-height: 280px;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
+      max-height: 600px;
+      overflow: auto;
       background: #090e1a;
       border-radius: 0.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 1rem;
       cursor: grab;
+      position: relative;
     }
 
-    .diagram-viewport:active {
+    .diagram-scroll-window:active {
       cursor: grabbing;
     }
 
-    .diagram-viewport .mermaid {
-      transform-origin: center center;
-      transition: transform 0.08s ease-out;
-      width: 100%;
-      display: flex;
-      justify-content: center;
+    .diagram-canvas {
+      display: inline-block;
+      min-width: 100%;
+      transform-origin: top center;
+      transition: transform 0.12s ease-out;
+      text-align: center;
     }
 
     .diagram-caption {
@@ -493,9 +455,13 @@
     }
 
     /* Mermaid High-Contrast Crisp Overrides */
+    .mermaid {
+      display: inline-block;
+      text-align: center;
+    }
+
     .mermaid svg {
-      max-width: 100% !important;
-      height: auto !important;
+      max-width: none !important;
       font-family: 'Inter', sans-serif !important;
     }
     
@@ -570,6 +536,134 @@
       font-size: 11px !important;
     }
 
+    /* Interactive Plume Simulation Widget */
+    .plume-simulator-card {
+      background: #080d18;
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      border-radius: 0.85rem;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      margin: 1.5rem 0;
+    }
+
+    .plume-sim-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 0.75rem;
+    }
+
+    .plume-sim-header h3 {
+      font-size: 1.2rem;
+      color: #93c5fd;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .plume-sim-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .plume-sim-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .plume-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      background: rgba(17, 24, 39, 0.6);
+      padding: 1.15rem;
+      border-radius: 0.65rem;
+      border: 1px solid var(--card-border);
+    }
+
+    .control-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .control-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .control-label span.val {
+      color: #60a5fa;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .control-slider {
+      width: 100%;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .select-stability {
+      background: #0f172a;
+      border: 1px solid var(--card-border);
+      color: #f8fafc;
+      padding: 0.4rem 0.6rem;
+      border-radius: 0.4rem;
+      font-size: 0.85rem;
+    }
+
+    .plume-canvas-wrapper {
+      position: relative;
+      background: #050811;
+      border-radius: 0.65rem;
+      border: 1px solid var(--card-border);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #plumeCanvas {
+      width: 100%;
+      height: 320px;
+      display: block;
+    }
+
+    .plume-metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: rgba(15, 23, 42, 0.85);
+      border-top: 1px solid var(--card-border);
+    }
+
+    .sim-stat {
+      text-align: center;
+    }
+
+    .sim-stat-val {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #34d399;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .sim-stat-lbl {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
     /* Fullscreen Diagram Modal */
     .diag-modal {
       display: none;
@@ -615,16 +709,8 @@
     .diag-modal-body {
       flex: 1;
       overflow: auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       padding: 2rem;
-      cursor: grab;
-      position: relative;
-    }
-
-    .diag-modal-body:active {
-      cursor: grabbing;
+      text-align: center;
     }
 
     .btn-close-modal {
@@ -808,7 +894,7 @@
         <li><a href="#spatial-hotspots" class="toc-link">12. Spatial Hotspot Clustering</a></li>
         <li><a href="#hybrid-backend" class="toc-link">13. Hybrid Decoupled Backend</a></li>
         <li><a href="#command-center" class="toc-link">14. Government Command Suite</a></li>
-        <li><a href="#spread-modeling" class="toc-link">15. Epidemiological Physics</a></li>
+        <li><a href="#spread-modeling" class="toc-link">15. Epidemiological Physics &amp; Sim</a></li>
         <li><a href="#statutory-compliance" class="toc-link">16. Statutory CIB&amp;RC Compliance</a></li>
         <li><a href="#roadmap" class="toc-link">17. Phased Architecture Roadmap</a></li>
       </ul>
@@ -842,20 +928,20 @@
 
         <div class="metric-grid">
           <div class="metric-card">
-            <div class="metric-num">0 ms</div>
+            <div class="metric-num">Zero</div>
             <div class="metric-desc">Cloud Dependency on Edge</div>
           </div>
           <div class="metric-card">
-            <div class="metric-num">&lt; 25 ms</div>
-            <div class="metric-desc">INT8 Classifier Latency</div>
+            <div class="metric-num">&lt; 30 ms</div>
+            <div class="metric-desc">EffNetLiteV0 (Entry Android)</div>
           </div>
           <div class="metric-card">
-            <div class="metric-num">15.08 MB</div>
+            <div class="metric-num">15.1 MB</div>
             <div class="metric-desc">Production Release APK</div>
           </div>
           <div class="metric-card">
-            <div class="metric-num">10 km</div>
-            <div class="metric-desc">PostGIS Cluster Radius</div>
+            <div class="metric-num">Real-Time</div>
+            <div class="metric-desc">Spatial Outbreak Clustering</div>
           </div>
         </div>
 
@@ -869,7 +955,7 @@
         <div class="callout callout-accent">
           <div class="callout-title">🛰️ The Slow Regional Loop (Macro-Epidemiological Surveillance)</div>
           <p>
-            Field reports persist locally inside WatermelonDB (SQLite) using client-generated v4 UUIDs and sync opportunistically when connectivity resumes. Central PostgreSQL/PostGIS database RPCs synthesize these reports into 10 km spatial outbreak clusters, while our scientific backend couples multispectral Sentinel-2 NDVI satellite layers with atmospheric Gaussian plume dispersion math to project downwind pathogen vectors and dispatch targeted DLT SMS advisories.
+            Field reports persist locally inside WatermelonDB (SQLite) using client-generated UUIDs and sync opportunistically when connectivity resumes. Central PostgreSQL/PostGIS database RPCs synthesize these reports into dynamic spatial outbreak clusters, while our scientific backend couples multispectral Sentinel-2 NDVI satellite layers with atmospheric Gaussian plume dispersion math to project downwind pathogen vectors and dispatch targeted DLT SMS advisories.
           </p>
         </div>
       </section>
@@ -882,25 +968,26 @@
         </p>
 
         <!-- Diagram 2.1 Container with Pan-Zoom Controls -->
-        <div class="diagram-container">
+        <div class="diagram-container" id="container-2-1">
           <div class="diagram-toolbar">
             <span class="diagram-tag">Figure 2.1 &bull; Unified Architectural Topology</span>
             <div class="diagram-btn-group">
-              <button class="btn-diag btn-zoom-in" data-target="mermaid-2-1" title="Zoom In">🔍 +</button>
-              <button class="btn-diag btn-zoom-out" data-target="mermaid-2-1" title="Zoom Out">🔍 −</button>
-              <button class="btn-diag btn-zoom-reset" data-target="mermaid-2-1" title="Reset View">↺ Reset</button>
-              <button class="btn-diag btn-zoom-full" data-target="mermaid-2-1" title="Expand Fullscreen">⛶ Fullscreen</button>
+              <button class="btn-diag" onclick="zoomDiag('canvas-2-1', 1.25)" title="Zoom In">🔍 +</button>
+              <button class="btn-diag" onclick="zoomDiag('canvas-2-1', 0.8)" title="Zoom Out">🔍 −</button>
+              <button class="btn-diag" onclick="resetDiag('canvas-2-1')" title="Reset View">↺ Reset</button>
+              <button class="btn-diag" onclick="openFullscreenDiag('canvas-2-1', 'Figure 2.1 &bull; Unified Architectural Topology')" title="Expand Fullscreen">⛶ Fullscreen</button>
             </div>
           </div>
-          <div class="diagram-viewport" id="viewport-2-1">
-            <div class="mermaid" id="mermaid-2-1">
+          <div class="diagram-scroll-window" id="window-2-1">
+            <div class="diagram-canvas" id="canvas-2-1">
+              <pre class="mermaid">
 flowchart TD
     subgraph EdgeTier ["Tier 1: Mobile Edge Client (React Native 0.74 / Android)"]
         direction TB
         MobileUI["Mobile UI Components\n• HomeDashboard.tsx (1-Tap Quick Grid)\n• ReportIssueView.tsx\n• SymptomEncyclopediaScreen.tsx"]
         
         subgraph LocalVault ["Offline Storage Vault"]
-            WDB[("WatermelonDB (SQLite)\nSchema v4 with Client UUID v4")]
+            WDB[("WatermelonDB (SQLite)\nLocal Database with Client UUID")]
             AsyncCache[("AsyncStorage Local Cache\n• Mandi Prices • Weather 3-Day")]
         end
         
@@ -908,7 +995,7 @@ flowchart TD
             EXIF["Hardware EXIF Canonicalization\n(Preserves 3.4M EffNet Parameters)"]
             YOLO["Stage 1: YOLOv8n INT8\nLeaf Localization (640x640)"]
             EffNet["Stage 2: EfficientNet-Lite0 INT8\nPathology Classifier (224x224)"]
-            PestEngine["CIB&RC Dosage Calculation\n(Safe Dilution & Satchel Math)"]
+            PestEngine["CIB-RC Dosage Calculation\n(Safe Dilution & Satchel Math)"]
         end
         
         MobileUI <--> WDB
@@ -920,7 +1007,7 @@ flowchart TD
         Postgres[("PostgreSQL 15 + PostGIS 3.3\n• public.field_reports (SRID 4326 Point)\n• public.profiles (RBAC)\n• public.api_telemetry")]
         PostgREST["PostgREST RESTful API Gateway"]
         S3Bucket["Supabase Storage S3 Bucket\n(/images/{user_id}/{report_id}.jpg)"]
-        DBTriggers["Database Triggers & Spatial RPCs\n• trg_field_report_triage\n• public.get_active_hotspots() (10km Cluster)"]
+        DBTriggers["Database Triggers & Spatial RPCs\n• trg_field_report_triage\n• public.get_active_hotspots()"]
         
         Postgres <--> DBTriggers
         Postgres <--> PostgREST
@@ -937,9 +1024,9 @@ flowchart TD
 
     subgraph CommandTier ["Tier 3B: Government Command Center (Vanilla ES6+)"]
         UI_Dash["Executive Dashboard (dashboard.html)\nReal-time District KPIs & Outbreak Feed"]
-        UI_Queue["Verification Queue (queue.html)\n400% Pan-Zoom Triage & DLT SMS Dispatch"]
+        UI_Queue["Verification Queue (queue.html)\nHigh-Res Photo Review & DLT SMS Dispatch"]
         UI_Radar["Cadastral Plot Radar (radar.html)\nSub-Meter Farm Parcels (~35m) with Sentinel-2 NDVI"]
-        UI_Surv["GIS Surveillance Map (surveillance.html)\n10km Hotspot Vectors & Atmospheric Wind Layer"]
+        UI_Surv["GIS Surveillance Map (surveillance.html)\nSpatial Hotspot Vectors & Atmospheric Wind Layer"]
         
         API_JS["Unified API Gateway Client (api.js)"]
         UI_Dash & UI_Queue & UI_Radar & UI_Surv <--> API_JS
@@ -949,68 +1036,67 @@ flowchart TD
     WDB -- "Opportunistic Background Sync (Idempotent Upsert)" --> PostgREST
     MobileUI -- "Background Leaf Photo Upload" --> S3Bucket
     API_JS -- "High-Concurrency REST Requests" --> NodeGateway
+              </pre>
             </div>
           </div>
-          <div class="diagram-caption">Figure 2.1: Unified architectural topology across edge mobile client, cloud storage, hybrid backend, and government surveillance portals. Use zoom controls or drag to inspect details.</div>
+          <div class="diagram-caption">Figure 2.1: Unified architectural topology across edge mobile client, cloud storage, hybrid backend, and government surveillance portals. Use zoom controls to inspect details.</div>
         </div>
 
         <h3 class="subsection-title">2.1 End-to-End Diagnostic &amp; Epidemiological Lifecycle</h3>
         <p>
-          The journey of an agronomic diagnostic vector—from an on-field camera shutter click in a remote taluka to state-level surveillance intervention—is executed across 16 deterministic steps:
+          The journey of an agronomic diagnostic vector—from an on-field camera shutter click in a remote taluka to state-level surveillance intervention—is executed across 17 deterministic steps:
         </p>
 
         <!-- Diagram 2.2 Container with Pan-Zoom Controls -->
-        <div class="diagram-container">
+        <div class="diagram-container" id="container-2-2">
           <div class="diagram-toolbar">
-            <span class="diagram-tag">Figure 2.2 &bull; 16-Step Diagnostic &amp; Surveillance Lifecycle</span>
+            <span class="diagram-tag">Figure 2.2 &bull; 17-Step Diagnostic &amp; Surveillance Lifecycle</span>
             <div class="diagram-btn-group">
-              <button class="btn-diag btn-zoom-in" data-target="mermaid-2-2" title="Zoom In">🔍 +</button>
-              <button class="btn-diag btn-zoom-out" data-target="mermaid-2-2" title="Zoom Out">🔍 −</button>
-              <button class="btn-diag btn-zoom-reset" data-target="mermaid-2-2" title="Reset View">↺ Reset</button>
-              <button class="btn-diag btn-zoom-full" data-target="mermaid-2-2" title="Expand Fullscreen">⛶ Fullscreen</button>
+              <button class="btn-diag" onclick="zoomDiag('canvas-2-2', 1.25)" title="Zoom In">🔍 +</button>
+              <button class="btn-diag" onclick="zoomDiag('canvas-2-2', 0.8)" title="Zoom Out">🔍 −</button>
+              <button class="btn-diag" onclick="resetDiag('canvas-2-2')" title="Reset View">↺ Reset</button>
+              <button class="btn-diag" onclick="openFullscreenDiag('canvas-2-2', 'Figure 2.2 &bull; Diagnostic &amp; Surveillance Lifecycle')" title="Expand Fullscreen">⛶ Fullscreen</button>
             </div>
           </div>
-          <div class="diagram-viewport" id="viewport-2-2">
-            <div class="mermaid" id="mermaid-2-2">
+          <div class="diagram-scroll-window" id="window-2-2">
+            <div class="diagram-canvas" id="canvas-2-2">
+              <pre class="mermaid">
 sequenceDiagram
     autonumber
-    actor Farmer as Smallholder Farmer
-    participant App as Mobile Edge Client (RN 0.74)
-    participant TFLite as Edge INT8 TFLite
-    participant WDB as WatermelonDB (SQLite)
-    participant Cloud as Supabase (PostgreSQL 15)
-    actor Worker as Extension Worker
-    participant Web as Command Center (DAO)
+    actor Farmer as "Smallholder Farmer"
+    participant App as "Mobile Client (React Native)"
+    participant TFLite as "On-Device INT8 Models"
+    participant WDB as "WatermelonDB (SQLite)"
+    participant Cloud as "Supabase (PostgreSQL 15)"
+    actor Worker as "Extension Worker"
+    participant Web as "Command Center Portal"
 
-    Farmer->>App: 1. Captures leaf photo and selects crop (e.g. Tomato)
-    App->>App: 2. Ingests foliar symptoms and field notes
-    App->>TFLite: 3. EXIF canonicalization, YOLO leaf crop, EffNet inference
-    TFLite-->>App: 4. Returns diagnosis ('Early Blight') and confidence (P = 0.64)
-    App->>Farmer: 5. Displays offline CIB&RC pump satchels and spray window
-    App->>WDB: 6. Persists record locally (status = 'LOCAL_UNSYNCED', UUID v4)
+    Farmer->>App: 1. Captures foliar photo and selects crop
+    App->>App: 2. Ingests foliar symptoms and farmer field notes
+    App->>TFLite: 3. Deterministic EXIF canonicalization and dual INT8 inference
+    TFLite-->>App: 4. Returns canonical diagnosis and confidence score
+    App->>Farmer: 5. Displays offline CIB-RC pump dosages and weather window
+    App->>WDB: 6. Commits record to local database with client UUID
     
     Note over App,Cloud: Connectivity Resumes (Opportunistic Sync)
-    App->>Cloud: 7. Idempotent upsert to public.field_reports and JPEG upload to S3
-    Cloud->>Cloud: 8. Trigger trg_field_report_triage: P = 0.64 below threshold (70%)
-    Cloud->>Cloud: 9. Assigns verification_status = 'pending'
+    App->>Cloud: 7. Idempotent upsert to field reports and photo upload to S3
+    Cloud->>Cloud: 8. Database trigger evaluates confidence score
+    Cloud->>Cloud: 9. Flags low confidence records as pending triage
     
-    par Extension Worker Review Queue
-        Cloud-->>Worker: 10A. Syncs pending task to ExtensionWorkerReviewQueue
-        Cloud-->>Web: 10B. Displays pending record in Verification Queue (queue.html)
-    end
+    Cloud-->>Worker: 10. Syncs pending verification task to mobile queue
+    Cloud-->>Web: 11. Displays pending scan in web verification queue
     
-    Worker->>Worker: 11. Inspects 400% high-res zoom photo; confirms or overrides
-    Worker->>Cloud: 12. Submits verified status: expert_diagnosis = 'Early Blight'
-    Worker->>Farmer: 13. Dispatches registered DLT Marathi SMS advisory
+    Worker->>Worker: 12. Inspects high-resolution photo and confirms or overrides
+    Worker->>Cloud: 13. Submits verified diagnosis and updates status
+    Worker->>Farmer: 14. Dispatches registered DLT Marathi SMS advisory
     
-    par Spatial Surveillance and Spread Modeling
-        Cloud->>Web: 14. public.get_active_hotspots() clusters verified records (10km)
-        Web->>Web: 15. Trajectory engine projects 24h, 48h, 72h plume spread ellipses
-        Web->>Web: 16. Cadastral radar renders sub-meter farm plots (~35m) with NDVI
-    end
+    Cloud->>Web: 15. Spatial clustering aggregates verified outbreak cases
+    Web->>Web: 16. Trajectory engine calculates multi-horizon plume dispersion
+    Web->>Web: 17. Cadastral radar maps parcel risks with Sentinel-2 NDVI
+              </pre>
             </div>
           </div>
-          <div class="diagram-caption">Figure 2.2: 16-step end-to-end data lifecycle from field shutter click to regional epidemiological alert.</div>
+          <div class="diagram-caption">Figure 2.2: 17-step end-to-end data lifecycle from field shutter click to regional epidemiological alert.</div>
         </div>
       </section>
 
@@ -1026,18 +1112,19 @@ sequenceDiagram
           In acute field situations, a farmer noticing rapid foliar necrosis or leaf curling cannot navigate nested application menus. The home dashboard implements a high-urgency, 1-tap quick action matrix:
         </p>
 
-        <div class="diagram-container">
+        <div class="diagram-container" id="container-3-1">
           <div class="diagram-toolbar">
             <span class="diagram-tag">Figure 3.1 &bull; 1-Tap Quick Actions Architecture</span>
             <div class="diagram-btn-group">
-              <button class="btn-diag btn-zoom-in" data-target="mermaid-3-1" title="Zoom In">🔍 +</button>
-              <button class="btn-diag btn-zoom-out" data-target="mermaid-3-1" title="Zoom Out">🔍 −</button>
-              <button class="btn-diag btn-zoom-reset" data-target="mermaid-3-1" title="Reset View">↺ Reset</button>
-              <button class="btn-diag btn-zoom-full" data-target="mermaid-3-1" title="Expand Fullscreen">⛶ Fullscreen</button>
+              <button class="btn-diag" onclick="zoomDiag('canvas-3-1', 1.25)" title="Zoom In">🔍 +</button>
+              <button class="btn-diag" onclick="zoomDiag('canvas-3-1', 0.8)" title="Zoom Out">🔍 −</button>
+              <button class="btn-diag" onclick="resetDiag('canvas-3-1')" title="Reset View">↺ Reset</button>
+              <button class="btn-diag" onclick="openFullscreenDiag('canvas-3-1', 'Figure 3.1 &bull; 1-Tap Quick Actions Architecture')" title="Expand Fullscreen">⛶ Fullscreen</button>
             </div>
           </div>
-          <div class="diagram-viewport" id="viewport-3-1">
-            <div class="mermaid" id="mermaid-3-1">
+          <div class="diagram-scroll-window" id="window-3-1">
+            <div class="diagram-canvas" id="canvas-3-1">
+              <pre class="mermaid">
 flowchart TD
     Home["HomeDashboard View"] --> Loc["Location & Offline Sync Status Bar"]
     Home --> Alert["Critical Outbreak Banner (Auto-filtered for District)"]
@@ -1052,6 +1139,7 @@ flowchart TD
         Slot3["Slot 3 (Bottom-Left)\n🚨 View Pest Alerts\nCommunity Outbreak Feed"]
         Slot4["Slot 4 (Bottom-Right)\n🧮 Pump Dosage Calculator\nKnapsack Spray Dilution"]
     end
+              </pre>
             </div>
           </div>
           <div class="diagram-caption">Figure 3.1: Information architecture of the farmer home dashboard prioritizing instantaneous triage.</div>
@@ -1060,7 +1148,7 @@ flowchart TD
         <ul style="margin-top: 1rem;">
           <li><strong>Slot 1 (Top-Left): Report Crop Disease:</strong> Prioritized with an amber accent border. Farmers can capture a leaf photo in a single tap, bypassing all configuration dialogs.</li>
           <li><strong>Slot 2 (Top-Right): Check Mandi Rates:</strong> Displays daily APMC market price fluctuations across Maharashtra mandis, cached locally in AsyncStorage.</li>
-          <li><strong>Slot 3 (Bottom-Left): View Pest Alerts:</strong> Renders geofenced community outbreak warnings within a 10 km radius derived from the government PostGIS surveillance cluster.</li>
+          <li><strong>Slot 3 (Bottom-Left): View Pest Alerts:</strong> Renders geofenced community outbreak warnings derived from the government PostGIS surveillance cluster.</li>
           <li><strong>Slot 4 (Bottom-Right): Pump Dosage Calculator:</strong> Direct interactive dilution modal computing exact formulation volume per 16-liter knapsack pump.</li>
         </ul>
       </section>
@@ -1072,25 +1160,27 @@ flowchart TD
           Running single-stage monolithic neural networks directly on full camera frames in rural fields leads to high background noise interference (weeds, soil, farmer fingers, ambient sky). KrishiRakshak implements a specialized <strong>two-stage neural pipeline</strong> executing within TensorFlow Lite.
         </p>
 
-        <div class="diagram-container">
+        <div class="diagram-container" id="container-4-1">
           <div class="diagram-toolbar">
             <span class="diagram-tag">Figure 4.1 &bull; Two-Stage Edge Neural Flow</span>
             <div class="diagram-btn-group">
-              <button class="btn-diag btn-zoom-in" data-target="mermaid-4-1" title="Zoom In">🔍 +</button>
-              <button class="btn-diag btn-zoom-out" data-target="mermaid-4-1" title="Zoom Out">🔍 −</button>
-              <button class="btn-diag btn-zoom-reset" data-target="mermaid-4-1" title="Reset View">↺ Reset</button>
-              <button class="btn-diag btn-zoom-full" data-target="mermaid-4-1" title="Expand Fullscreen">⛶ Fullscreen</button>
+              <button class="btn-diag" onclick="zoomDiag('canvas-4-1', 1.25)" title="Zoom In">🔍 +</button>
+              <button class="btn-diag" onclick="zoomDiag('canvas-4-1', 0.8)" title="Zoom Out">🔍 −</button>
+              <button class="btn-diag" onclick="resetDiag('canvas-4-1')" title="Reset View">↺ Reset</button>
+              <button class="btn-diag" onclick="openFullscreenDiag('canvas-4-1', 'Figure 4.1 &bull; Two-Stage Edge Neural Flow')" title="Expand Fullscreen">⛶ Fullscreen</button>
             </div>
           </div>
-          <div class="diagram-viewport" id="viewport-4-1">
-            <div class="mermaid" id="mermaid-4-1">
+          <div class="diagram-scroll-window" id="window-4-1">
+            <div class="diagram-canvas" id="canvas-4-1">
+              <pre class="mermaid">
 flowchart LR
     RawPhoto["Raw Camera Frame\n(Full Resolution JPEG)"] --> EXIF["Deterministic EXIF Rule\n(Hardware Rotation Matrix)"]
     EXIF --> Stage1["Stage 1: YOLOv8n INT8\nLeaf Localization (640x640)"]
     Stage1 --> Crop["Sub-Tensor Crop\n(Tight Leaf ROI Box)"]
     Crop --> Stage2["Stage 2: EffNet-Lite0 INT8\nPathology Classifier (224x224)"]
     Stage2 --> LogitMask["Logit Masking Guardrail\n(Poaceae / Selected Crop Filter)"]
-    LogitMask --> Dosage["CIB&RC Dosage Engine\n(Active Ingredient Math)"]
+    LogitMask --> Dosage["CIB-RC Dosage Engine\n(Active Ingredient Math)"]
+              </pre>
             </div>
           </div>
           <div class="diagram-caption">Figure 4.1: Two-stage quantized edge neural pipeline with hardware preprocessing and logit masking guardrails.</div>
@@ -1162,12 +1252,12 @@ flowchart LR
           Data persistence at the edge is powered by <strong>WatermelonDB</strong> sitting directly on native Android SQLite. WatermelonDB provides a fully observable, lazy-loaded local database that scales to hundreds of thousands of records without memory leaks or UI thread stutter.
         </p>
 
-        <h3 class="subsection-title">7.1 Client-Authoritative v4 UUID Enforcement</h3>
+        <h3 class="subsection-title">7.1 Client-Authoritative Cryptographic UUID Enforcement</h3>
         <p>
-          Because farmers operate in cellular dead zones, primary keys cannot rely on auto-incrementing server sequences. Every record generates a <strong>cryptographic v4 UUID</strong> locally (<code>reportId = v4()</code>) at the moment of capture.
+          Because farmers operate in cellular dead zones, primary keys cannot rely on auto-incrementing server sequences. Every record generates a <strong>cryptographic UUID</strong> locally at the moment of capture.
         </p>
 
-        <h3 class="subsection-title">7.2 Schema Version 4 Evolution</h3>
+        <h3 class="subsection-title">7.2 Relational Column Mapping</h3>
         <div class="table-wrapper">
           <table>
             <thead>
@@ -1180,7 +1270,7 @@ flowchart LR
             <tbody>
               <tr>
                 <td><code>id</code></td>
-                <td>String (UUID v4)</td>
+                <td>String (UUID)</td>
                 <td>Client-generated primary key; collision-free across distributed devices.</td>
               </tr>
               <tr>
@@ -1292,7 +1382,7 @@ flowchart LR
                 <td><strong>Stage 2: EfficientNet-Lite0 Classifier</strong></td>
                 <td>INT8 Quantized</td>
                 <td>224 × 224 × 3</td>
-                <td><strong>24.93 ms</strong></td>
+                <td><strong>24.93 ms (&lt; 30 ms)</strong></td>
                 <td>12.71 ms</td>
                 <td>32.40 ms</td>
               </tr>
@@ -1323,9 +1413,9 @@ flowchart LR
           </p>
         </div>
 
-        <h3 class="subsection-title">9.1 Production Release APK Footprint (15.08 MB)</h3>
+        <h3 class="subsection-title">9.1 Production Release APK Footprint (15.1 MB)</h3>
         <p>
-          By leveraging native ABI splitting (<code>arm64-v8a</code>), R8 full-mode tree-shaking, ProGuard bytecode minification, and Hermes ahead-of-time compilation, the total production release binary is compressed to just <strong>15.08 MB on disk</strong>:
+          By leveraging native ABI splitting (<code>arm64-v8a</code>), R8 full-mode tree-shaking, ProGuard bytecode minification, and Hermes ahead-of-time compilation, the total production release binary is compressed to just <strong>15.1 MB on disk</strong>:
         </p>
         <div class="table-wrapper">
           <table>
@@ -1359,13 +1449,13 @@ flowchart LR
               <tr>
                 <td>Assets, Encyclopedia &amp; UI Fonts</td>
                 <td>~1.8 MB</td>
-                <td>~1.28 MB</td>
+                <td>~1.30 MB</td>
                 <td>Lossless WebP compression &amp; font subsetting</td>
               </tr>
               <tr>
                 <td><strong>Total Production APK</strong></td>
                 <td><strong>~25.5 MB</strong></td>
-                <td><strong>15.08 MB</strong></td>
+                <td><strong>15.1 MB</strong></td>
                 <td><strong>Complete Production Optimization</strong></td>
               </tr>
             </tbody>
@@ -1492,9 +1582,9 @@ flowchart LR
         </p>
 
         <div class="callout callout-accent">
-          <div class="callout-title">🛰️ Spatial Density Clustering Parameters</div>
+          <div class="callout-title">🛰️ Dynamic Proximity Clustering</div>
           <p>
-            The engine groups confirmed disease reports using a spatial proximity threshold of <strong>10 kilometers</strong> (via <code>ST_DWithin</code> on spheroidal WGS 84 coordinates) across a temporal window of <strong>72 hours</strong>, requiring a minimum quorum of <strong>$\ge 3$ distinct farmer reports</strong> before escalating to an active outbreak hotspot.
+            The engine groups confirmed disease reports using configurable spatial proximity thresholds on spheroidal WGS 84 coordinates across recent temporal windows, requiring a quorum of distinct farmer reports before escalating to an active outbreak hotspot.
           </p>
         </div>
 
@@ -1511,25 +1601,26 @@ flowchart LR
         </p>
 
         <!-- Diagram 13.1 Container with Pan-Zoom Controls -->
-        <div class="diagram-container">
+        <div class="diagram-container" id="container-13-1">
           <div class="diagram-toolbar">
             <span class="diagram-tag">Figure 13.1 &bull; Hybrid Decoupled Backend Lifecycle</span>
             <div class="diagram-btn-group">
-              <button class="btn-diag btn-zoom-in" data-target="mermaid-13-1" title="Zoom In">🔍 +</button>
-              <button class="btn-diag btn-zoom-out" data-target="mermaid-13-1" title="Zoom Out">🔍 −</button>
-              <button class="btn-diag btn-zoom-reset" data-target="mermaid-13-1" title="Reset View">↺ Reset</button>
-              <button class="btn-diag btn-zoom-full" data-target="mermaid-13-1" title="Expand Fullscreen">⛶ Fullscreen</button>
+              <button class="btn-diag" onclick="zoomDiag('canvas-13-1', 1.25)" title="Zoom In">🔍 +</button>
+              <button class="btn-diag" onclick="zoomDiag('canvas-13-1', 0.8)" title="Zoom Out">🔍 −</button>
+              <button class="btn-diag" onclick="resetDiag('canvas-13-1')" title="Reset View">↺ Reset</button>
+              <button class="btn-diag" onclick="openFullscreenDiag('canvas-13-1', 'Figure 13.1 &bull; Hybrid Decoupled Backend Lifecycle')" title="Expand Fullscreen">⛶ Fullscreen</button>
             </div>
           </div>
-          <div class="diagram-viewport" id="viewport-13-1">
-            <div class="mermaid" id="mermaid-13-1">
+          <div class="diagram-scroll-window" id="window-13-1">
+            <div class="diagram-canvas" id="canvas-13-1">
+              <pre class="mermaid">
 sequenceDiagram
     autonumber
-    actor Officer as District Agricultural Officer
-    participant Browser as Command Center Portal
-    participant NodeGateway as Node.js BFF Gateway (Port 3000)
-    participant Postgres as Supabase (PostgreSQL / PostGIS)
-    participant FastAPICore as FastAPI Scientific Core (Port 8000)
+    actor Officer as "District Agricultural Officer"
+    participant Browser as "Command Center Portal"
+    participant NodeGateway as "Node.js BFF Gateway"
+    participant Postgres as "Supabase (PostgreSQL)"
+    participant FastAPICore as "FastAPI Scientific Core"
 
     Officer->>Browser: Opens Cadastral Radar (Nashik Taluka)
     Browser->>NodeGateway: Requests cadastral radar telemetry for district
@@ -1544,6 +1635,7 @@ sequenceDiagram
     FastAPICore-->>NodeGateway: Returns hotspots, trajectories, and NDVI grid
     NodeGateway-->>Browser: Aggregated JSON Response in sub-25ms
     Browser->>Officer: Renders Cadastral Parcels (~35m) and Dispersion Cones
+              </pre>
             </div>
           </div>
           <div class="diagram-caption">Figure 13.1: Hybrid decoupled communication lifecycle between Node.js BFF gateway and Python FastAPI scientific sidecar.</div>
@@ -1580,7 +1672,7 @@ sequenceDiagram
               <tr>
                 <td><strong>2. Agronomist Verification Queue (<code>queue.html</code>)</strong></td>
                 <td>Extension Workers &amp; Field Officers</td>
-                <td>Triage queue capturing $P < 0.70$ edge scans. Features <strong>400% pan-zoom leaf inspection</strong>, symptom badge review, clinical diagnosis override, and automated Marathi DLT SMS dispatch.</td>
+                <td>Triage queue capturing low-confidence edge scans. Features high-resolution photo review, symptom badge inspection, clinical diagnosis override, and automated Marathi DLT SMS dispatch.</td>
               </tr>
               <tr>
                 <td><strong>3. Cadastral Plot Radar (<code>radar.html</code>)</strong></td>
@@ -1590,16 +1682,16 @@ sequenceDiagram
               <tr>
                 <td><strong>4. GIS Surveillance Command (<code>surveillance.html</code>)</strong></td>
                 <td>Epidemiologists</td>
-                <td>Macro-GIS vector maps rendering 10 km PostGIS outbreak circles, live atmospheric wind vectors, and multi-horizon dispersion trajectory cones.</td>
+                <td>Macro-GIS vector maps rendering spatial outbreak clusters, live atmospheric wind vectors, and multi-horizon dispersion trajectory cones.</td>
               </tr>
             </tbody>
           </table>
         </div>
       </section>
 
-      <!-- Section 15: Epidemiological Spread Modeling -->
+      <!-- Section 15: Epidemiological Spread Modeling & Simulation -->
       <section class="section" id="spread-modeling">
-        <h2 class="section-title"><span class="num">15.</span> Epidemiological Spread Modeling &amp; Mathematical Physics</h2>
+        <h2 class="section-title"><span class="num">15.</span> Epidemiological Spread Modeling &amp; Interactive Physics Simulation</h2>
         <p>
           Biological outbreaks do not disperse in uniform radial circles. Airborne fungal spores (e.g. <em>Plasmopara viticola</em> / Downy Mildew) and migratory pests (e.g. <em>Spodoptera frugiperda</em> / Fall Armyworm) disperse governed by atmospheric physics and biological thermal kinetics.
         </p>
@@ -1621,6 +1713,80 @@ sequenceDiagram
           <li>$H$: Effective release height ($H = h_c + \Delta h$).</li>
           <li>$\sigma_y, \sigma_z$: Pasquill-Gifford lateral and vertical dispersion coefficients expanding as a function of downwind distance $x$: $\sigma_y(x) = a \cdot x^b, \sigma_z(x) = c \cdot x^d$.</li>
         </ul>
+
+        <!-- Interactive Plume Simulation Widget -->
+        <div class="plume-simulator-card">
+          <div class="plume-sim-header">
+            <h3>🔬 Interactive Atmospheric Gaussian Plume Simulator</h3>
+            <span class="nav-badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3);">Real-Time Physics Engine</span>
+          </div>
+
+          <div class="plume-sim-grid">
+            <!-- Controls Column -->
+            <div class="plume-controls">
+              <div class="control-row">
+                <label class="control-label">
+                  Mean Wind Velocity ($u$):
+                  <span class="val" id="val-wind">4.5 m/s</span>
+                </label>
+                <input type="range" min="1.0" max="12.0" step="0.5" value="4.5" class="control-slider" id="slider-wind">
+              </div>
+
+              <div class="control-row">
+                <label class="control-label">
+                  Atmospheric Stability Class:
+                </label>
+                <select class="select-stability" id="select-stability">
+                  <option value="A">Class A &bull; Highly Unstable (Strong Sun, High Turbulence)</option>
+                  <option value="B">Class B &bull; Moderately Unstable (Warm Day)</option>
+                  <option value="C" selected>Class C &bull; Slightly Unstable (Moderate Convection)</option>
+                  <option value="D">Class D &bull; Neutral (Overcast Day / High Wind)</option>
+                  <option value="E">Class E &bull; Slightly Stable (Cool Night)</option>
+                  <option value="F">Class F &bull; Moderately Stable (Inversion Night, Narrow Plume)</option>
+                </select>
+              </div>
+
+              <div class="control-row">
+                <label class="control-label">
+                  Spore Emission Rate ($Q$):
+                  <span class="val" id="val-q">500 spores/s</span>
+                </label>
+                <input type="range" min="100" max="1000" step="50" value="500" class="control-slider" id="slider-q">
+              </div>
+
+              <div class="control-row">
+                <label class="control-label">
+                  Canopy Height ($H$):
+                  <span class="val" id="val-h">1.5 m</span>
+                </label>
+                <input type="range" min="0.5" max="4.0" step="0.5" value="1.5" class="control-slider" id="slider-h">
+              </div>
+
+              <div style="font-size: 0.78rem; color: var(--text-dim); line-height: 1.4; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 0.5rem;">
+                Adjust physical atmospheric parameters to observe real-time downwind advection, lateral plume spread $\sigma_y(x)$, and hazardous ground-level concentration envelopes.
+              </div>
+            </div>
+
+            <!-- Canvas Visualization Column -->
+            <div class="plume-canvas-wrapper">
+              <canvas id="plumeCanvas"></canvas>
+              <div class="plume-metrics-bar">
+                <div class="sim-stat">
+                  <div class="sim-stat-val" id="stat-peak">238.4</div>
+                  <div class="sim-stat-lbl">Peak Centerline (particles/m³)</div>
+                </div>
+                <div class="sim-stat">
+                  <div class="sim-stat-val" id="stat-hazard">3.4 km</div>
+                  <div class="sim-stat-lbl">High-Risk Hazard Horizon</div>
+                </div>
+                <div class="sim-stat">
+                  <div class="sim-stat-val" id="stat-width">380 m</div>
+                  <div class="sim-stat-lbl">Lateral Plume Width (at 2km)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <h3 class="subsection-title">15.2 Growing Degree-Day (GDD) Phenological Accumulation</h3>
         <p>
@@ -1767,8 +1933,8 @@ sequenceDiagram
             <strong>Core Focus:</strong> Complete offline edge capture $\rightarrow$ two-stage INT8 inference $\rightarrow$ deterministic CIB&amp;RC knapsack dosage calculation $\rightarrow$ basic government surveillance portal.
           </p>
           <ul style="margin-top: 0.5rem;">
-            <li>On-device dual-stage INT8 TFLite pipeline (YOLOv8n leaf crop + EfficientNet-Lite0 classifier under 25 ms).</li>
-            <li>WatermelonDB SQLite Schema v4 local vault with client-authoritative UUID v4 and opportunistic background sync.</li>
+            <li>On-device dual-stage INT8 TFLite pipeline (YOLOv8n leaf crop + EfficientNet-Lite0 classifier under 30 ms).</li>
+            <li>WatermelonDB SQLite local database with client-generated UUIDs and opportunistic background sync.</li>
             <li>Central PostgreSQL/PostGIS database coordination with automated <code>trg_field_report_triage</code> trigger.</li>
             <li>Demonstrated with live field scans and calibrated synthetic field datasets across one representative pilot taluka (Nashik).</li>
           </ul>
@@ -1781,11 +1947,11 @@ sequenceDiagram
             <strong>Core Focus:</strong> Operational Early Warning System (EWS), automated SMS advisories, and IoT trap integration.
           </p>
           <ul style="margin-top: 0.5rem;">
-            <li><strong>Community EWS Deployment:</strong> Real-time 10 km spatial outbreak clustering alerting surrounding farm clusters.</li>
+            <li><strong>Community EWS Deployment:</strong> Real-time spatial outbreak clustering alerting surrounding farm clusters.</li>
             <li><strong>Automated DLT SMS &amp; Push Advisories:</strong> Serving pre-registered regulatory Marathi/Hindi/English templates directly to feature-phone farmers.</li>
             <li><strong>IoT Pheromone Traps:</strong> Solar-powered sensor telemetry ingesting daily insect counts into PostGIS.</li>
             <li><strong>Sentinel-2 NDVI Telemetry:</strong> Ingesting multi-spectral satellite raster bands to monitor vegetative canopy stress.</li>
-            <li><strong>Dedicated Extension Worker App:</strong> Equipping field officers with mobile 400% pan-zoom verification queues.</li>
+            <li><strong>Dedicated Extension Worker App:</strong> Equipping field officers with mobile high-resolution verification queues.</li>
             <li><strong>Target Milestone:</strong> Field AI diagnostic accuracy $\ge 85\%$.</li>
           </ul>
         </div>
@@ -1845,7 +2011,7 @@ sequenceDiagram
               <tr>
                 <td><strong>Mobile Binary Footprint</strong></td>
                 <td>&le; 25.0 MB</td>
-                <td><strong>15.08 MB</strong> (arm64-v8a Release APK)</td>
+                <td><strong>15.1 MB</strong> (arm64-v8a Release APK)</td>
                 <td><span style="color: #34d399; font-weight: 600;">40% Below Ceiling</span></td>
               </tr>
               <tr>
@@ -1911,7 +2077,7 @@ sequenceDiagram
         </div>
       </div>
       <div class="diag-modal-body" id="diag-modal-body">
-        <div id="modal-svg-container" style="transform-origin: center center; transition: transform 0.08s ease-out;"></div>
+        <div id="modal-svg-container" style="display: inline-block; transform-origin: top center; transition: transform 0.1s ease-out;"></div>
       </div>
     </div>
   </div>
@@ -1919,183 +2085,369 @@ sequenceDiagram
   <!-- Floating Back to Top Button -->
   <a href="#" class="back-to-top" title="Back to top">↑</a>
 
-  <!-- Pan-Zoom & Modal Controller Script -->
+  <!-- Complete Script: Robust Pan-Zoom Controller & Interactive Plume Simulation -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // 1. Run Mermaid rendering
-      mermaid.run().then(() => {
-        setupPanZoom();
+    // State storage for diagram zoom levels
+    const diagramScales = {};
+
+    function zoomDiag(canvasId, factor) {
+      const el = document.getElementById(canvasId);
+      if (!el) return;
+      if (!diagramScales[canvasId]) diagramScales[canvasId] = 1;
+      diagramScales[canvasId] = Math.max(0.4, Math.min(4.0, diagramScales[canvasId] * factor));
+      el.style.transform = `scale(${diagramScales[canvasId]})`;
+    }
+
+    function resetDiag(canvasId) {
+      const el = document.getElementById(canvasId);
+      if (!el) return;
+      diagramScales[canvasId] = 1;
+      el.style.transform = 'scale(1)';
+      const win = el.parentElement;
+      if (win) {
+        win.scrollLeft = 0;
+        win.scrollTop = 0;
+      }
+    }
+
+    // Modal Fullscreen
+    let modalScale = 1.0;
+    const modal = document.getElementById('diag-modal');
+    const modalSvgContainer = document.getElementById('modal-svg-container');
+    const modalTitle = document.getElementById('modal-diagram-title');
+    const modalClose = document.getElementById('modal-close');
+
+    function openFullscreenDiag(canvasId, title) {
+      const srcCanvas = document.getElementById(canvasId);
+      if (!srcCanvas) return;
+      modalTitle.innerText = title;
+      modalSvgContainer.innerHTML = srcCanvas.innerHTML;
+      modalScale = 1.1;
+      modalSvgContainer.style.transform = `scale(${modalScale})`;
+      modal.style.display = 'flex';
+    }
+
+    modalClose.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    document.getElementById('modal-zoom-in').addEventListener('click', () => {
+      modalScale = Math.min(5.0, modalScale * 1.3);
+      modalSvgContainer.style.transform = `scale(${modalScale})`;
+    });
+
+    document.getElementById('modal-zoom-out').addEventListener('click', () => {
+      modalScale = Math.max(0.4, modalScale / 1.3);
+      modalSvgContainer.style.transform = `scale(${modalScale})`;
+    });
+
+    document.getElementById('modal-zoom-reset').addEventListener('click', () => {
+      modalScale = 1.0;
+      modalSvgContainer.style.transform = 'scale(1)';
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.style.display === 'flex') {
+        modal.style.display = 'none';
+      }
+    });
+
+    // Make diagram scroll-windows draggable
+    document.querySelectorAll('.diagram-scroll-window').forEach(win => {
+      let isDown = false;
+      let startX, startY, scrollLeft, scrollTop;
+
+      win.addEventListener('mousedown', (e) => {
+        isDown = true;
+        startX = e.pageX - win.offsetLeft;
+        startY = e.pageY - win.offsetTop;
+        scrollLeft = win.scrollLeft;
+        scrollTop = win.scrollTop;
       });
 
-      // 2. Setup interactive pan-zoom on all diagram containers
-      function setupPanZoom() {
-        document.querySelectorAll('.diagram-container').forEach(container => {
-          const viewport = container.querySelector('.diagram-viewport');
-          const mermaidEl = container.querySelector('.mermaid');
-          if (!viewport || !mermaidEl) return;
+      win.addEventListener('mouseleave', () => { isDown = false; });
+      win.addEventListener('mouseup', () => { isDown = false; });
 
-          let scale = 1;
-          let pointX = 0;
-          let pointY = 0;
-          let isPanning = false;
-          let startX = 0;
-          let startY = 0;
+      win.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - win.offsetLeft;
+        const y = e.pageY - win.offsetTop;
+        const walkX = (x - startX) * 1.5;
+        const walkY = (y - startY) * 1.5;
+        win.scrollLeft = scrollLeft - walkX;
+        win.scrollTop = scrollTop - walkY;
+      });
+    });
 
-          function updateTransform() {
-            mermaidEl.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
-          }
+    // Initialize Mermaid Safely on Load
+    document.addEventListener('DOMContentLoaded', () => {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'dark',
+        securityLevel: 'loose',
+        themeVariables: {
+          darkMode: true,
+          background: '#090e1a',
+          primaryColor: '#1e293b',
+          primaryTextColor: '#f8fafc',
+          primaryBorderColor: '#3b82f6',
+          lineColor: '#60a5fa',
+          secondaryColor: '#0f172a',
+          tertiaryColor: '#111827',
+          clusterBkg: '#0c1424',
+          clusterBorder: '#475569'
+        }
+      });
 
-          // Zoom In
-          const zoomInBtn = container.querySelector('.btn-zoom-in');
-          if (zoomInBtn) {
-            zoomInBtn.addEventListener('click', () => {
-              scale = Math.min(scale * 1.3, 4.0);
-              updateTransform();
-            });
-          }
+      // Initialize the Plume Simulator
+      initPlumeSimulator();
+    });
 
-          // Zoom Out
-          const zoomOutBtn = container.querySelector('.btn-zoom-out');
-          if (zoomOutBtn) {
-            zoomOutBtn.addEventListener('click', () => {
-              scale = Math.max(scale / 1.3, 0.4);
-              updateTransform();
-            });
-          }
+    /* ====================================================================
+       Atmospheric Gaussian Plume Advection Interactive Physics Simulator
+       ==================================================================== */
+    function initPlumeSimulator() {
+      const canvas = document.getElementById('plumeCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
 
-          // Reset
-          const resetBtn = container.querySelector('.btn-zoom-reset');
-          if (resetBtn) {
-            resetBtn.addEventListener('click', () => {
-              scale = 1;
-              pointX = 0;
-              pointY = 0;
-              updateTransform();
-            });
-          }
+      // Sliders & inputs
+      const sliderWind = document.getElementById('slider-wind');
+      const sliderQ = document.getElementById('slider-q');
+      const sliderH = document.getElementById('slider-h');
+      const selectStab = document.getElementById('select-stability');
 
-          // Fullscreen Modal trigger
-          const fullBtn = container.querySelector('.btn-zoom-full');
-          if (fullBtn) {
-            fullBtn.addEventListener('click', () => {
-              const svg = mermaidEl.querySelector('svg');
-              const tag = container.querySelector('.diagram-tag');
-              if (svg) {
-                openModal(svg, tag ? tag.innerText : 'Diagram View');
-              }
-            });
-          }
+      const valWind = document.getElementById('val-wind');
+      const valQ = document.getElementById('val-q');
+      const valH = document.getElementById('val-h');
 
-          // Mouse dragging pan
-          viewport.addEventListener('mousedown', (e) => {
-            e.preventDefault();
-            startX = e.clientX - pointX;
-            startY = e.clientY - pointY;
-            isPanning = true;
-          });
+      const statPeak = document.getElementById('stat-peak');
+      const statHazard = document.getElementById('stat-hazard');
+      const statWidth = document.getElementById('stat-width');
 
-          window.addEventListener('mousemove', (e) => {
-            if (!isPanning) return;
-            pointX = e.clientX - startX;
-            pointY = e.clientY - startY;
-            updateTransform();
-          });
+      // Resize canvas to actual container width
+      function resizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * window.devicePixelRatio;
+        canvas.height = 320 * window.devicePixelRatio;
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
 
-          window.addEventListener('mouseup', () => {
-            isPanning = false;
-          });
+      // Pasquill-Gifford dispersion coefficients
+      const stabilityParams = {
+        'A': { a: 0.22, b: 0.90, c: 0.20, d: 0.95 },
+        'B': { a: 0.16, b: 0.90, c: 0.12, d: 0.90 },
+        'C': { a: 0.11, b: 0.90, c: 0.08, d: 0.85 },
+        'D': { a: 0.08, b: 0.90, c: 0.06, d: 0.80 },
+        'E': { a: 0.06, b: 0.90, c: 0.03, d: 0.75 },
+        'F': { a: 0.04, b: 0.90, c: 0.016, d: 0.70 }
+      };
 
-          // Ctrl + Wheel Zoom
-          viewport.addEventListener('wheel', (e) => {
-            if (e.ctrlKey || e.metaKey) {
-              e.preventDefault();
-              const delta = -e.deltaY;
-              if (delta > 0) scale = Math.min(scale * 1.15, 4.0);
-              else scale = Math.max(scale / 1.15, 0.4);
-              updateTransform();
-            }
-          }, { passive: false });
+      // Particle simulation for live advection animation
+      let particles = [];
+      const numParticles = 120;
+      for (let i = 0; i < numParticles; i++) {
+        particles.push({
+          x: Math.random() * 500,
+          yOffset: (Math.random() - 0.5) * 2,
+          speedOffset: 0.8 + Math.random() * 0.4,
+          life: Math.random()
         });
       }
 
-      // 3. Fullscreen Modal Pan-Zoom
-      const modal = document.getElementById('diag-modal');
-      const modalBody = document.getElementById('diag-modal-body');
-      const modalSvgContainer = document.getElementById('modal-svg-container');
-      const modalTitle = document.getElementById('modal-diagram-title');
-      const modalClose = document.getElementById('modal-close');
+      function calculatePlume(x_m, y_m, u, Q, H, stab) {
+        if (x_m <= 1) return 0;
+        const p = stabilityParams[stab] || stabilityParams['C'];
+        const sigma_y = p.a * Math.pow(x_m, p.b);
+        const sigma_z = p.c * Math.pow(x_m, p.d);
 
-      let modalScale = 1.2;
-      let modalX = 0;
-      let modalY = 0;
-      let modalPanning = false;
-      let modalStartX = 0;
-      let modalStartY = 0;
-
-      function updateModalTransform() {
-        modalSvgContainer.style.transform = `translate(${modalX}px, ${modalY}px) scale(${modalScale})`;
+        // Ground-level concentration (z = 0)
+        const term1 = Q / (Math.PI * u * sigma_y * sigma_z);
+        const term2 = Math.exp(- (y_m * y_m) / (2 * sigma_y * sigma_y));
+        const term3 = Math.exp(- (H * H) / (2 * sigma_z * sigma_z));
+        return term1 * term2 * term3;
       }
 
-      function openModal(svgEl, title) {
-        modalTitle.innerText = title;
-        modalSvgContainer.innerHTML = '';
-        const clonedSvg = svgEl.cloneNode(true);
-        clonedSvg.style.maxWidth = 'none';
-        modalSvgContainer.appendChild(clonedSvg);
-        
-        modalScale = 1.25;
-        modalX = 0;
-        modalY = 0;
-        updateModalTransform();
-        modal.style.display = 'flex';
-      }
+      let animFrame;
+      function render() {
+        const u = parseFloat(sliderWind.value);
+        const Q = parseFloat(sliderQ.value);
+        const H = parseFloat(sliderH.value);
+        const stab = selectStab.value;
 
-      modalClose.addEventListener('click', () => {
-        modal.style.display = 'none';
-      });
+        valWind.innerText = `${u.toFixed(1)} m/s`;
+        valQ.innerText = `${Math.round(Q)} spores/s`;
+        valH.innerText = `${H.toFixed(1)} m`;
 
-      document.getElementById('modal-zoom-in').addEventListener('click', () => {
-        modalScale = Math.min(modalScale * 1.3, 5.0);
-        updateModalTransform();
-      });
+        const w = canvas.getBoundingClientRect().width;
+        const h = 320;
+        ctx.clearRect(0, 0, w, h);
 
-      document.getElementById('modal-zoom-out').addEventListener('click', () => {
-        modalScale = Math.max(modalScale / 1.3, 0.4);
-        updateModalTransform();
-      });
+        const originX = 55;
+        const originY = h / 2;
+        const maxDistMeters = 5000; // 5 km horizontal window
+        const scaleX = (w - originX - 25) / maxDistMeters;
 
-      document.getElementById('modal-zoom-reset').addEventListener('click', () => {
-        modalScale = 1.25;
-        modalX = 0;
-        modalY = 0;
-        updateModalTransform();
-      });
-
-      modalBody.addEventListener('mousedown', (e) => {
-        e.preventDefault();
-        modalStartX = e.clientX - modalX;
-        modalStartY = e.clientY - modalY;
-        modalPanning = true;
-      });
-
-      window.addEventListener('mousemove', (e) => {
-        if (!modalPanning) return;
-        modalX = e.clientX - modalStartX;
-        modalY = e.clientY - modalStartY;
-        updateModalTransform();
-      });
-
-      window.addEventListener('mouseup', () => {
-        modalPanning = false;
-      });
-
-      // Escape key closes modal
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.style.display === 'flex') {
-          modal.style.display = 'none';
+        // Draw distance grid lines
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+        ctx.lineWidth = 1;
+        ctx.fillStyle = '#64748b';
+        ctx.font = '10px "JetBrains Mono", monospace';
+        for (let km = 1; km <= 5; km++) {
+          const gx = originX + (km * 1000) * scaleX;
+          ctx.beginPath();
+          ctx.moveTo(gx, 0);
+          ctx.lineTo(gx, h);
+          ctx.stroke();
+          ctx.fillText(`${km} km`, gx - 14, h - 10);
         }
+
+        // Draw centerline
+        ctx.strokeStyle = 'rgba(59, 130, 246, 0.2)';
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(originX, originY);
+        ctx.lineTo(w, originY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Calculate and draw Gaussian Plume dispersion envelope
+        const p = stabilityParams[stab] || stabilityParams['C'];
+        
+        // Outer hazard contour (~5 particles/m3) and inner core (~50 particles/m3)
+        const steps = 60;
+        const topPoints = [];
+        const bottomPoints = [];
+        const coreTop = [];
+        const coreBottom = [];
+
+        for (let i = 1; i <= steps; i++) {
+          const dist = (i / steps) * maxDistMeters;
+          const px = originX + dist * scaleX;
+          const sig_y = p.a * Math.pow(dist, p.b);
+          
+          // Width scaled to canvas pixels (1 pixel = 3.5 meters crosswind)
+          const pxWidth = sig_y * 2.2 * 0.28;
+          topPoints.push({ x: px, y: originY - pxWidth });
+          bottomPoints.push({ x: px, y: originY + pxWidth });
+
+          const coreWidth = sig_y * 1.0 * 0.28;
+          coreTop.push({ x: px, y: originY - coreWidth });
+          coreBottom.push({ x: px, y: originY + coreWidth });
+        }
+
+        // Fill outer envelope gradient
+        const plumeGrad = ctx.createLinearGradient(originX, originY, w, originY);
+        plumeGrad.addColorStop(0, 'rgba(239, 68, 68, 0.55)');
+        plumeGrad.addColorStop(0.3, 'rgba(245, 158, 11, 0.35)');
+        plumeGrad.addColorStop(0.7, 'rgba(59, 130, 246, 0.18)');
+        plumeGrad.addColorStop(1, 'rgba(59, 130, 246, 0.02)');
+
+        ctx.fillStyle = plumeGrad;
+        ctx.beginPath();
+        ctx.moveTo(originX, originY);
+        topPoints.forEach(pt => ctx.lineTo(pt.x, pt.y));
+        for (let i = bottomPoints.length - 1; i >= 0; i--) {
+          ctx.lineTo(bottomPoints[i].x, bottomPoints[i].y);
+        }
+        ctx.closePath();
+        ctx.fill();
+
+        // Fill dense core gradient
+        const coreGrad = ctx.createLinearGradient(originX, originY, originX + (w - originX) * 0.5, originY);
+        coreGrad.addColorStop(0, 'rgba(239, 68, 68, 0.85)');
+        coreGrad.addColorStop(0.5, 'rgba(245, 158, 11, 0.6)');
+        coreGrad.addColorStop(1, 'rgba(245, 158, 11, 0.05)');
+
+        ctx.fillStyle = coreGrad;
+        ctx.beginPath();
+        ctx.moveTo(originX, originY);
+        coreTop.forEach(pt => ctx.lineTo(pt.x, pt.y));
+        for (let i = coreBottom.length - 1; i >= 0; i--) {
+          ctx.lineTo(coreBottom[i].x, coreBottom[i].y);
+        }
+        ctx.closePath();
+        ctx.fill();
+
+        // Animate drifting spore particles
+        particles.forEach(pt => {
+          pt.x += (u * 0.9 * pt.speedOffset);
+          if (pt.x > maxDistMeters) {
+            pt.x = Math.random() * 20;
+            pt.yOffset = (Math.random() - 0.5) * 2;
+          }
+          const currX = originX + pt.x * scaleX;
+          const currSig = p.a * Math.pow(Math.max(1, pt.x), p.b) * 0.28;
+          const currY = originY + (pt.yOffset * currSig);
+
+          const alpha = Math.max(0, 1 - (pt.x / maxDistMeters));
+          ctx.fillStyle = `rgba(254, 240, 138, ${alpha * 0.8})`;
+          ctx.beginPath();
+          ctx.arc(currX, currY, 1.8, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        // Draw active source origin (Infected Crop Node)
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.arc(originX, originY, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = 'bold 11px Inter, sans-serif';
+        ctx.fillText('Infection Source (Q)', originX - 50, originY - 14);
+
+        // Wind vector indicator on top-right
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+        ctx.fillRect(w - 145, 15, 130, 48);
+        ctx.strokeStyle = varColor('--card-border');
+        ctx.strokeRect(w - 145, 15, 130, 48);
+
+        ctx.fillStyle = '#93c5fd';
+        ctx.font = '600 11px Inter, sans-serif';
+        ctx.fillText(`Wind Vector: ${u.toFixed(1)} m/s →`, w - 135, 34);
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '10px Inter, sans-serif';
+        ctx.fillText(`Class ${stab} Dispersion`, w - 135, 50);
+
+        // Update live computed metrics
+        const peakVal = calculatePlume(250, 0, u, Q, H, stab);
+        statPeak.innerText = peakVal.toFixed(1);
+
+        // Calculate hazard horizon where C >= 15 particles/m3
+        let hazardMeters = 500;
+        for (let m = 500; m <= 5000; m += 100) {
+          if (calculatePlume(m, 0, u, Q, H, stab) >= 15) {
+            hazardMeters = m;
+          }
+        }
+        statHazard.innerText = `${(hazardMeters / 1000).toFixed(1)} km`;
+
+        const sigAt2k = p.a * Math.pow(2000, p.b);
+        statWidth.innerText = `${Math.round(sigAt2k * 2)} m`;
+
+        animFrame = requestAnimationFrame(render);
+      }
+
+      function varColor(cssVar) {
+        return getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim() || '#1f2937';
+      }
+
+      // Input change listeners
+      [sliderWind, sliderQ, sliderH, selectStab].forEach(el => {
+        el.addEventListener('input', () => {
+          // values update in loop
+        });
       });
-    });
+
+      render();
+    }
   </script>
 
 </body>
