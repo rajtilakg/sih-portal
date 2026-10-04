@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KrishiRakshak — Unified Engineering & Architectural Specification</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- KaTeX for High-Precision Mathematical Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
+  <!-- Mermaid.js for Vector Architecture Diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        darkMode: true,
+        background: '#111827',
+        primaryColor: '#3b82f6',
+        primaryTextColor: '#f3f4f6',
+        primaryBorderColor: '#374151',
+        lineColor: '#60a5fa',
+        secondaryColor: '#10b981',
+        tertiaryColor: '#1e293b'
+      },
+      flowchart: { curve: 'basis' }
+    });
+  </script>
+
+  <style>
+    :root {
+      --bg: #090d16;
+      --surface: #0f172a;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --card-border-glow: rgba(59, 130, 246, 0.4);
+      --text-main: #f3f4f6;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --primary-light: #93c5fd;
+      --accent: #10b981;
+      --accent-hover: #059669;
+      --accent-light: #6ee7b7;
+      --amber: #f59e0b;
+      --purple: #8b5cf6;
+      --code-bg: #080c14;
+      --sidebar-width: 280px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.65;
+      font-size: 15px;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 100% 40%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+    }
+
+    /* Top Sticky Navigation Bar */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(9, 13, 22, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .nav-badge {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 0.45rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .nav-btn-home {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid var(--card-border);
+    }
+    .nav-btn-home:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .nav-btn-dash {
+      background: var(--primary);
+      color: #fff;
+    }
+    .nav-btn-dash:hover {
+      background: var(--primary-hover);
+    }
+
+    .nav-btn-apk {
+      background: var(--accent);
+      color: #fff;
+    }
+    .nav-btn-apk:hover {
+      background: var(--accent-hover);
+    }
+
+    /* Main Layout with Sidebar */
+    .layout-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      padding: 2rem 1.5rem;
+      gap: 2.5rem;
+    }
+
+    /* Sidebar Table of Contents */
+    .sidebar {
+      width: var(--sidebar-width);
+      flex-shrink: 0;
+      position: sticky;
+      top: 5rem;
+      height: calc(100vh - 6.5rem);
+      overflow-y: auto;
+      padding-right: 0.75rem;
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--card-border);
+      border-radius: 4px;
+    }
+
+    .toc-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      font-weight: 700;
+      margin-bottom: 0.85rem;
+      padding-left: 0.5rem;
+    }
+
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .toc-link {
+      display: block;
+      padding: 0.4rem 0.65rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 0.35rem;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+      border-left: 2px solid transparent;
+    }
+
+    .toc-link:hover {
+      color: #60a5fa;
+      background: rgba(59, 130, 246, 0.08);
+      border-left-color: #3b82f6;
+    }
+
+    /* Content Area */
+    .content {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    /* Header Banner */
+    .doc-header {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(17, 24, 39, 0.9) 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 0.85rem;
+      padding: 2.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .doc-header::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 100%;
+      background: radial-gradient(circle at 100% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .doc-meta {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .doc-meta span strong {
+      color: var(--text-main);
+    }
+
+    .doc-header h1 {
+      font-size: 2.35rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 0.85rem;
+      background: linear-gradient(135deg, #ffffff 40%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .doc-header p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 850px;
+      line-height: 1.6;
+    }
+
+    /* Section Styling */
+    .section {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .section-title {
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding-bottom: 0.65rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .section-title span.num {
+      color: #3b82f6;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.25rem;
+    }
+
+    .subsection-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-top: 1rem;
+    }
+
+    p {
+      color: #cbd5e1;
+      line-height: 1.7;
+    }
+
+    /* Cards & Callouts */
+    .callout {
+      background: rgba(17, 24, 39, 0.7);
+      border-left: 4px solid var(--primary);
+      border-radius: 0 0.5rem 0.5rem 0;
+      padding: 1.15rem 1.35rem;
+      border-top: 1px solid var(--card-border);
+      border-right: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .callout-title {
+      font-weight: 700;
+      color: #93c5fd;
+      font-size: 0.95rem;
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .callout-accent {
+      border-left-color: var(--accent);
+    }
+    .callout-accent .callout-title {
+      color: var(--accent-light);
+    }
+
+    .callout-amber {
+      border-left-color: var(--amber);
+    }
+    .callout-amber .callout-title {
+      color: #fde68a;
+    }
+
+    /* Metric Badges Grid */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 0.5rem 0;
+    }
+
+    .metric-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 0.6rem;
+      padding: 1.15rem;
+      text-align: center;
+    }
+
+    .metric-num {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: #60a5fa;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .metric-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.25rem;
+    }
+
+    /* Diagram Containers */
+    .diagram-container {
+      background: #0d131f;
+      border: 1px solid var(--card-border);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      overflow-x: auto;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .diagram-caption {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 0.75rem;
+      font-style: italic;
+    }
+
+    /* Tables */
+    .table-wrapper {
+      overflow-x: auto;
+      border: 1px solid var(--card-border);
+      border-radius: 0.6rem;
+      margin: 0.5rem 0;
+      background: var(--card-bg);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: #1e293b;
+      color: #f8fafc;
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      border-bottom: 1px solid var(--card-border);
+      font-family: 'Inter', sans-serif;
+    }
+
+    td {
+      padding: 0.75rem 1rem;
+      color: #cbd5e1;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Code Blocks */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 0.6rem;
+      padding: 1.15rem;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: #e2e8f0;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88em;
+      background: rgba(255, 255, 255, 0.07);
+      padding: 0.15rem 0.4rem;
+      border-radius: 0.3rem;
+      color: #93c5fd;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      border-radius: 0;
+      color: inherit;
+    }
+
+    /* Math Formula Block */
+    .math-block {
+      background: #0b1120;
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      border-radius: 0.6rem;
+      padding: 1.25rem;
+      margin: 0.75rem 0;
+      overflow-x: auto;
+      text-align: center;
+    }
+
+    /* Lists */
+    ul, ol {
+      padding-left: 1.5rem;
+      color: #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    li strong {
+      color: #fff;
+    }
+
+    /* Back to Top Floating Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--primary);
+      color: white;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+      transition: all 0.2s;
+      z-index: 90;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .back-to-top:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .sidebar {
+        display: none;
+      }
+      .layout-container {
+        padding: 1.5rem 1rem;
+      }
+      .doc-header h1 {
+        font-size: 1.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Top Navigation -->
+  <nav class="top-nav">
+    <a href="index.html" class="nav-brand">
+      <span>🌾 KrishiRakshak</span>
+      <span class="nav-badge">System Specification</span>
+    </a>
+    <div class="nav-actions">
+      <a href="index.html" class="nav-btn nav-btn-home">🏠 Portal Home</a>
+      <a href="https://krishirakshak-government-dashboard.onrender.com/" target="_blank" rel="noopener noreferrer" class="nav-btn nav-btn-dash">🏛️ Launch Dashboard</a>
+      <a href="https://github.com/rajtilakg/KrishiRakshak-Farmer-s-App/releases/download/release/KrishiRakshak.apk" class="nav-btn nav-btn-apk">📱 Download APK</a>
+    </div>
+  </nav>
+
+  <div class="layout-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="toc-title">Architecture Blueprint</div>
+      <ul class="toc-list">
+        <li><a href="#executive-summary" class="toc-link">1. Executive Summary &amp; Two Loops</a></li>
+        <li><a href="#system-topology" class="toc-link">2. Unified System Topology</a></li>
+        <li><a href="#mobile-client" class="toc-link">3. Mobile Edge Engineering</a></li>
+        <li><a href="#edge-ml-pipeline" class="toc-link">4. On-Device Two-Stage ML</a></li>
+        <li><a href="#exif-canonicalization" class="toc-link">5. Deterministic Preprocessing</a></li>
+        <li><a href="#domain-adaptation" class="toc-link">6. Domain Adaptation &amp; Guardrails</a></li>
+        <li><a href="#offline-persistence" class="toc-link">7. WatermelonDB Offline Vault</a></li>
+        <li><a href="#indic-accessibility" class="toc-link">8. Indic Audio &amp; Knowledge</a></li>
+        <li><a href="#benchmarks" class="toc-link">9. Empirical Device Profiling</a></li>
+        <li><a href="#disease-taxonomy" class="toc-link">10. 40-Class Disease Taxonomy</a></li>
+        <li><a href="#cloud-database" class="toc-link">11. Central PostGIS Data Tier</a></li>
+        <li><a href="#spatial-hotspots" class="toc-link">12. Spatial Hotspot Clustering</a></li>
+        <li><a href="#hybrid-backend" class="toc-link">13. Hybrid Decoupled Backend</a></li>
+        <li><a href="#command-center" class="toc-link">14. Government Command Suite</a></li>
+        <li><a href="#spread-modeling" class="toc-link">15. Epidemiological Physics</a></li>
+        <li><a href="#statutory-compliance" class="toc-link">16. Statutory CIB&amp;RC Compliance</a></li>
+        <li><a href="#roadmap" class="toc-link">17. Strategic Technical Roadmap</a></li>
+      </ul>
+    </aside>
+
+    <!-- Content Area -->
+    <main class="content">
+
+      <!-- Header Banner -->
+      <header class="doc-header">
+        <div class="doc-meta">
+          <span><strong>Document Version:</strong> 3.2.0 (Unified Production Blueprint)</span>
+          <span><strong>Publication Date:</strong> October 2026</span>
+          <span><strong>Author:</strong> Team Hidden Variables</span>
+          <span><strong>Target Sector:</strong> Smart India Hackathon &bull; Govt of Maharashtra</span>
+        </div>
+        <h1>KrishiRakshak — Unified Engineering &amp; Architectural Specification</h1>
+        <p>
+          An exhaustive, multi-tier systems engineering specification detailing our offline-first edge AI diagnostic client, relational PostGIS surveillance tier, hybrid decoupled backend gateway, and mathematical epidemic dispersion engine.
+        </p>
+      </header>
+
+      <!-- Section 1: Executive Summary -->
+      <section class="section" id="executive-summary">
+        <h2 class="section-title"><span class="num">01.</span> Executive Summary &amp; The Two-Loop Architecture</h2>
+        <p>
+          Smallholder farmers across rural India face severe infrastructure constraints: intermittent or nonexistent cellular connectivity in remote farm parcels, high ambient thermal stress, budget smartphone hardware, and diverse regional dialects. Concurrently, agricultural authorities grapple with delayed epidemic visibility, often relying on manual paper-based field surveys that register pest infestations and fungal blights weeks after spore vectors cross taluka boundaries.
+        </p>
+        <p>
+          <strong>KrishiRakshak</strong> bridges this operational chasm by enforcing a clean architectural bifurcation into <strong>The Two Operational Loops</strong>:
+        </p>
+
+        <div class="metric-grid">
+          <div class="metric-card">
+            <div class="metric-num">0 ms</div>
+            <div class="metric-desc">Cloud Dependency on Edge</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-num">&lt; 25 ms</div>
+            <div class="metric-desc">INT8 Classifier Latency</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-num">15.08 MB</div>
+            <div class="metric-desc">Production Release APK</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-num">10 km</div>
+            <div class="metric-desc">PostGIS Cluster Radius</div>
+          </div>
+        </div>
+
+        <div class="callout">
+          <div class="callout-title">⚡ The Fast Local Loop (Agrarian Edge Sovereignty)</div>
+          <p>
+            Image capture, hardware EXIF canonicalization, spatial leaf isolation (YOLOv8n), fine-grained pathological classification (EfficientNet-Lite0), and Central Insecticides Board &amp; Registration Committee (CIB&amp;RC) knapsack spray satchel calculations execute <strong>100% locally on the farmer's smartphone in milliseconds</strong> with zero internet connectivity.
+          </p>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-title">🛰️ The Slow Regional Loop (Macro-Epidemiological Surveillance)</div>
+          <p>
+            Field reports persist locally inside WatermelonDB (SQLite) using client-generated v4 UUIDs and sync opportunistically when connectivity resumes. Central PostgreSQL/PostGIS database RPCs synthesize these reports into 10 km spatial outbreak clusters, while our scientific backend couples multispectral Sentinel-2 NDVI satellite layers with atmospheric Gaussian plume dispersion math to project downwind pathogen vectors and dispatch targeted DLT SMS advisories.
+          </p>
+        </div>
+      </section>
+
+      <!-- Section 2: Complete Unified Architecture Topology -->
+      <section class="section" id="system-topology">
+        <h2 class="section-title"><span class="num">02.</span> Complete Unified Architecture Topology</h2>
+        <p>
+          The system spans three interconnected production tiers: the <strong>Offline Mobile Edge Client</strong>, the <strong>Central Cloud Infrastructure</strong> (Supabase PostgreSQL + PostGIS), and the <strong>Government Command Center with Hybrid Decoupled Backends</strong>.
+        </p>
+
+        <div class="diagram-container">
+          <div class="mermaid">
+graph TD
+    subgraph MobileClient ["Tier 1: Mobile Edge Client (React Native 0.74 / Android)"]
+        UI["Mobile UI Layer\n(HomeDashboard, ReportIssueView, SymptomEncyclopedia)"]
+        Context["React AppContext State\n(Language, Sync Mutex, Auth)"]
+        
+        subgraph LocalVault ["Offline Storage Vault"]
+            WDB[("WatermelonDB (SQLite)\nSchema Version 4\n• farmer_reports\n• farmer_profiles")]
+            AsyncStorage[("AsyncStorage Cache\n• Weather 3-Day Cache\n• Mandi Price Cache")]
+            RNFS["Local File System Cache\n(RNFS.CachesDirectoryPath)"]
+        end
+        
+        subgraph EdgeML ["On-Device Edge ML Pipeline"]
+            CamHandler["Camera / EXIF Pipeline\n(Orientation & Sensor Matrix)"]
+            YOLO["Stage 1: YOLOv8n INT8\nSpatial Leaf Detector (640x640)"]
+            EffNet["Stage 2: EffNet-Lite0 INT8\nPathogen Classifier (224x224)"]
+            PestEngine["CIB&RC Pesticide Engine\n(pesticideEngine.ts)"]
+            SprayEngine["Agronomic Spray Window Engine\n(Weather Delta Constraints)"]
+        end
+        
+        UI <--> Context
+        Context <--> WDB
+        Context <--> AsyncStorage
+        Context <--> RNFS
+        CamHandler --> YOLO --> EffNet --> PestEngine
+    end
+
+    subgraph CloudInfra ["Tier 2: Central Cloud Infrastructure (Supabase / PostgreSQL 15)"]
+        Postgres[("PostgreSQL 15 + PostGIS 3.3\n• public.profiles\n• public.field_reports\n• public.api_telemetry")]
+        PostgREST["Supabase PostgREST Gateway"]
+        S3["Supabase Storage S3 Bucket\n(/images/{user_id}/{report_id}.jpg)"]
+        Triggers["Database Triggers & RPCs\n• trg_field_report_triage\n• public.get_active_hotspots()"]
+        
+        PostgREST <--> Postgres
+        Triggers <--> Postgres
+    end
+
+    subgraph DualBackend ["Tier 3A: Hybrid Decoupled Backend Architecture"]
+        subgraph NodeServer ["Node.js Express BFF Gateway (Port 3000)"]
+            Express["server.js (Reverse Proxy & I/O Gateway)"]
+            Node_Reports["services/fieldReports.js"]
+            Node_Auth["services/auth.js (JWT & RBAC Guard)"]
+        end
+        
+        subgraph PyServer ["Python FastAPI Scientific Core (Port 8000)"]
+            FastAPI["krishirakshak_fastapi/main.py"]
+            Py_Traj["ml_pipeline/trajectory_engine.py (Plume Physics)"]
+            Py_Spatial["services/spatial_analytics.py (KD-Tree & Outbreaks)"]
+            Py_Ndvi["services/ndvi_raster.py (Canopy Stress Math)"]
+        end
+        
+        Express -- "Internal Loopback RPC (/compute/*)" --> FastAPI
+        Node_Reports <--> Postgres
+    end
+
+    subgraph WebPortal ["Tier 3B: Government Command Center (Modern Vanilla ES6+)"]
+        UI_Dash["Executive Dashboard\n(dashboard.html)"]
+        UI_Queue["Verification Queue\n(queue.html)"]
+        UI_Radar["Cadastral Plot Radar\n(radar.html)"]
+        UI_Surv["GIS Surveillance Map\n(surveillance.html)"]
+        UI_Vault["Data Vault & Audit\n(vault.html)"]
+        
+        API_JS["api.js (Unified Client Engine)"]
+        UI_Dash & UI_Queue & UI_Radar & UI_Surv & UI_Vault <--> API_JS
+    end
+
+    %% Inter-Tier Data Flow
+    WDB -- "Opportunistic Sync (syncPendingReports)" --> PostgREST
+    RNFS -- "Background JPEG Upload" --> S3
+    API_JS -- "REST API (Port 3000)" --> Express
+          </div>
+          <div class="diagram-caption">Figure 2.1: Unified architectural topology across edge mobile client, cloud storage, hybrid backend, and government surveillance portals.</div>
+        </div>
+
+        <h3 class="subsection-title">2.1 End-to-End Diagnostic &amp; Epidemiological Lifecycle</h3>
+        <p>
+          The lifecycle of an agronomic diagnostic vector—from on-field camera shutter click in a remote taluka to state-level surveillance intervention—is executed across 15 deterministic steps:
+        </p>
+
+        <div class="diagram-container">
+          <div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor Farmer as Smallholder Farmer
+    participant App as Mobile Edge Client (RN 0.74)
+    participant TFLite as On-Device INT8 Models
+    participant WDB as WatermelonDB (Local SQLite)
+    participant Cloud as Supabase (PostgreSQL 15)
+    actor Worker as Extension Worker
+    participant Web as Command Center (DAO)
+
+    Farmer->>App: Captures leaf photo & selects crop (e.g. Tomato)
+    App->>App: Ingests foliar symptoms & field notes
+    App->>TFLite: EXIF canonicalization -> YOLO leaf crop -> EffNet inference
+    TFLite-->>App: Returns diagnosis ('Early Blight') & confidence (P = 0.64)
+    App->>Farmer: Instant offline CIB&RC pump satchels & spray window
+    App->>WDB: Commits record locally (status = 'pending', client UUID v4)
+    
+    Note over App,Cloud: Connectivity Resumes (Opportunistic Sync)
+    App->>Cloud: Idempotent upsert to public.field_reports & JPEG upload to S3
+    Cloud->>Cloud: trg_field_report_triage trigger: P = 0.64 < 0.70 -> status = 'pending'
+    
+    par Extension Worker Review Queue
+        Cloud-->>Worker: Syncs pending task to ExtensionWorkerReviewQueue
+        Cloud-->>Web: Displays pending record in Verification Queue (queue.html)
+    end
+    
+    Worker->>Worker: Inspects 400% high-res zoom photo; confirms or overrides
+    Worker->>Cloud: Submits verified status: expert_diagnosis = 'Early Blight'
+    Worker->>Farmer: Dispatches registered DLT Marathi SMS advisory
+    
+    par Spatial Surveillance & Spread Modeling
+        Cloud->>Web: public.get_active_hotspots() clusters verified records (10km)
+        Web->>Web: Trajectory engine projects 24h/48h/72h plume spread ellipses
+        Web->>Web: Cadastral radar renders sub-meter farm plots (~35m x 35m) with NDVI
+    end
+          </div>
+          <div class="diagram-caption">Figure 2.2: 15-step end-to-end data lifecycle from field shutter click to regional epidemiological alert.</div>
+        </div>
+      </section>
+
+      <!-- Section 3: Mobile Edge Engineering -->
+      <section class="section" id="mobile-client">
+        <h2 class="section-title"><span class="num">03.</span> Mobile Edge Engineering (React Native 0.74 &amp; Hermes)</h2>
+        <p>
+          The mobile client is engineered on <strong>React Native 0.74</strong> utilizing the <strong>Hermes JavaScript engine</strong> with Ahead-Of-Time (AOT) bytecode compilation. It is purpose-built to execute smoothly on low-cost entry-level smartphones common in rural India, characterized by 2GB–4GB of RAM and MediaTek Helio / Unisoc chipsets.
+        </p>
+
+        <h3 class="subsection-title">3.1 1-Tap Farmer Quick Actions Grid</h3>
+        <p>
+          In acute field situations, a farmer noticing rapid foliar necrosis or leaf curling cannot navigate nested application menus. The home dashboard implements a high-urgency, 1-tap quick action matrix:
+        </p>
+
+        <div class="diagram-container">
+          <div class="mermaid">
+flowchart TD
+    Home["HomeDashboard View"] --> Loc["Location & Offline Sync Status Bar"]
+    Home --> Alert["Critical Outbreak Banner (Auto-filtered for District)"]
+    Home --> QuickActions["Quick Services (1-Tap Farmer Tools)"]
+    Home --> Weather["Live Weather & Agronomic Spray Window Status"]
+    Home --> Advisory["Primary Crop Advisory (Native TTS Audio)"]
+
+    subgraph QuickActions ["1-Tap Farmer Quick Actions Grid"]
+        direction LR
+        Slot1["Slot 1 (Top-Left, Amber Accent)\n📷 Report Crop Disease\nImmediate TFLite Diagnostic Trigger"]
+        Slot2["Slot 2 (Top-Right)\n📈 Check Mandi Rates\nAPMC Real-time Price Tracker"]
+        Slot3["Slot 3 (Bottom-Left)\n🚨 View Pest Alerts\nCommunity Outbreak Feed"]
+        Slot4["Slot 4 (Bottom-Right)\n🧮 Pump Dosage Calculator\nKnapsack Spray Dilution"]
+    end
+          </div>
+          <div class="diagram-caption">Figure 3.1: Information architecture of the farmer home dashboard prioritizing instantaneous triage.</div>
+        </div>
+
+        <ul style="margin-top: 1rem;">
+          <li><strong>Slot 1 (Top-Left): Report Crop Disease:</strong> Prioritized with an amber accent border. Farmers can capture a leaf photo in a single tap, bypassing all configuration dialogs.</li>
+          <li><strong>Slot 2 (Top-Right): Check Mandi Rates:</strong> Displays daily APMC market price fluctuations across Maharashtra mandis, cached locally in AsyncStorage.</li>
+          <li><strong>Slot 3 (Bottom-Left): View Pest Alerts:</strong> Renders geofenced community outbreak warnings within a 10 km radius derived from the government PostGIS surveillance cluster.</li>
+          <li><strong>Slot 4 (Bottom-Right): Pump Dosage Calculator:</strong> Direct interactive dilution modal computing exact formulation volume per 16-liter knapsack pump.</li>
+        </ul>
+      </section>
+
+      <!-- Section 4: On-Device Two-Stage ML -->
+      <section class="section" id="edge-ml-pipeline">
+        <h2 class="section-title"><span class="num">04.</span> On-Device Edge Machine Learning Pipeline (Two-Stage INT8 TFLite)</h2>
+        <p>
+          Running single-stage monolithic neural networks directly on full camera frames in rural fields leads to high background noise interference (weeds, soil, farmer fingers, ambient sky). KrishiRakshak implements a specialized <strong>two-stage neural pipeline</strong> executing within TensorFlow Lite.
+        </p>
+
+        <div class="diagram-container">
+          <div class="mermaid">
+flowchart LR
+    RawPhoto["Raw Camera Frame\n(Full Resolution JPEG)"] --> EXIF["Deterministic EXIF Rule\n(Hardware Rotation Matrix)"]
+    EXIF --> Stage1["Stage 1: YOLOv8n INT8\nLeaf Localization (640x640)"]
+    Stage1 --> Crop["Sub-Tensor Crop\n(Tight Leaf ROI Box)"]
+    Crop --> Stage2["Stage 2: EffNet-Lite0 INT8\nPathology Classifier (224x224)"]
+    Stage2 --> LogitMask["Logit Masking Guardrail\n(Poaceae / Selected Crop Filter)"]
+    LogitMask --> Dosage["CIB&RC Dosage Engine\n(Active Ingredient Math)"]
+          </div>
+          <div class="diagram-caption">Figure 4.1: Two-stage quantized edge neural pipeline with hardware preprocessing and logit masking guardrails.</div>
+        </div>
+
+        <div class="callout callout-accent" style="margin-top: 1rem;">
+          <div class="callout-title">🧠 Stage 1: Spatial Leaf Localization (YOLOv8n INT8)</div>
+          <p>
+            An INT8 quantized YOLOv8 nano model takes a 640×640 input and isolates the dominant agricultural leaf bounding box, stripping away background weeds, dry soil, and non-foliar artifacts.
+          </p>
+        </div>
+
+        <div class="callout" style="margin-top: 0.75rem;">
+          <div class="callout-title">🔬 Stage 2: Fine-Grained Pathogen Classification (EfficientNet-Lite0 INT8)</div>
+          <p>
+            The cropped leaf sub-tensor is bilinear-interpolated to 224×224 and fed into an INT8 quantized EfficientNet-Lite0 backbone, resolving subtle lesion textures, foliar spots, and chlorosis across 40 agricultural classes.
+          </p>
+        </div>
+      </section>
+
+      <!-- Section 5: Preprocessing & Parameter Efficiency -->
+      <section class="section" id="exif-canonicalization">
+        <h2 class="section-title"><span class="num">05.</span> Deterministic Preprocessing: Hardware EXIF Canonicalization</h2>
+        <p>
+          A fundamental challenge in edge computer vision is sensor orientation variance: depending on the handset manufacturer and camera driver, raw image buffers are captured rotated by 90°, 180°, or 270° with an EXIF orientation metadata flag.
+        </p>
+
+        <div class="callout callout-amber">
+          <div class="callout-title">📐 The 3.4-Million-Parameter Conservation Principle</div>
+          <p>
+            Rather than forcing EfficientNet-Lite0's 3.4 million parameters to expend neural capacity learning rotation invariance via expensive data augmentation, KrishiRakshak applies a <strong>zero-cost deterministic EXIF canonicalization rule</strong> in native Android hardware before memory buffer allocation.
+          </p>
+        </div>
+
+        <p>
+          By handling orientation deterministically in the hardware camera pipeline, 100% of EfficientNet's depthwise separable convolution kernels remain dedicated to extracting pathological fungal, bacterial, and viral feature representations.
+        </p>
+      </section>
+
+      <!-- Section 6: Domain Adaptation & Guardrails -->
+      <section class="section" id="domain-adaptation">
+        <h2 class="section-title"><span class="num">06.</span> Domain Adaptation &amp; Agronomic Guardrails</h2>
+        
+        <h3 class="subsection-title">6.1 Synthetic Field Augmentation &amp; Laboratory Bias Elimination</h3>
+        <p>
+          Public agricultural datasets such as PlantVillage suffer from notorious laboratory background bias: leaves are photographed against flat white, gray, or solid black laboratory backdrops. When raw models trained on such datasets encounter real Indian fields, they suffer catastrophic domain collapse.
+        </p>
+        <p>
+          To bridge this domain gap, we engineered an automated pipeline that segments the leaf silhouette and composites it onto rich, realistic agronomic backgrounds—including damp soil textures, mulched rows, and surrounding canopy foliage. This regularizes spatial gradients and forces the model to key off genuine lesion necrosis rather than sterile lab artifacts.
+        </p>
+
+        <h3 class="subsection-title">6.2 Logit Masking for Biologically Similar Crops (Poaceae Family Guardrail)</h3>
+        <p>
+          Certain crops share close botanical lineage—such as <strong>Corn (*Zea mays*)</strong> and <strong>Sugarcane (*Saccharum officinarum*)</strong>, both members of the <em>Poaceae</em> (grass) family. Under low-light conditions, raw convolutional feature maps can exhibit cross-crop confusion.
+        </p>
+        <p>
+          KrishiRakshak enforces an explicit software guardrail:
+        </p>
+        <ul>
+          <li><strong>Softmax Logit Masking:</strong> When a farmer selects a specific crop cohort (e.g. Corn), logits corresponding to other crop families are mathematically masked prior to the softmax probability distribution calculation.</li>
+          <li><strong>Pre-Masking Consistency Check:</strong> If the unmasked model logits strongly signal a different crop with high certainty before masking occurs, the app gracefully prompts the farmer to verify their selection, preventing accidental misclassification while respecting user agency.</li>
+        </ul>
+      </section>
+
+      <!-- Section 7: Local Offline Storage & Sync -->
+      <section class="section" id="offline-persistence">
+        <h2 class="section-title"><span class="num">07.</span> Local Offline Storage Vault &amp; Opportunistic Synchronization</h2>
+        <p>
+          Data persistence at the edge is powered by <strong>WatermelonDB</strong> sitting directly on native Android SQLite. WatermelonDB provides a fully observable, lazy-loaded local database that scales to hundreds of thousands of records without memory leaks or UI thread stutter.
+        </p>
+
+        <h3 class="subsection-title">7.1 Client-Authoritative v4 UUID Enforcement</h3>
+        <p>
+          Because farmers operate in cellular dead zones, primary keys cannot rely on auto-incrementing server sequences. Every record generates a <strong>cryptographic v4 UUID</strong> locally (<code>reportId = v4()</code>) at the moment of capture.
+        </p>
+
+        <h3 class="subsection-title">7.2 Schema Version 4 Evolution</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Column Name</th>
+                <th>Type</th>
+                <th>Description &amp; Offline Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>id</code></td>
+                <td>String (UUID v4)</td>
+                <td>Client-generated primary key; collision-free across distributed devices.</td>
+              </tr>
+              <tr>
+                <td><code>crop_type</code></td>
+                <td>String</td>
+                <td>Selected agricultural crop cohort (e.g. Cotton, Corn, Soybean, Sugarcane).</td>
+              </tr>
+              <tr>
+                <td><code>ai_diagnosis</code></td>
+                <td>String</td>
+                <td>Canonical title-case disease string inferred by on-device TFLite.</td>
+              </tr>
+              <tr>
+                <td><code>probability</code></td>
+                <td>Float</td>
+                <td>Quantized inference confidence score (e.g. 0.84).</td>
+              </tr>
+              <tr>
+                <td><code>verification_status</code></td>
+                <td>String Enum</td>
+                <td>Lifecycle state: <code>'pending' | 'auto_validated' | 'validated' | 'corrected'</code>.</td>
+              </tr>
+              <tr>
+                <td><code>expert_diagnosis</code></td>
+                <td>String</td>
+                <td>Agronomist-verified diagnosis or override; original AI diagnosis is preserved.</td>
+              </tr>
+              <tr>
+                <td><code>symptoms</code></td>
+                <td>String (JSON)</td>
+                <td>JSON-serialized array of localized foliar symptom badges selected by farmer.</td>
+              </tr>
+              <tr>
+                <td><code>notes</code></td>
+                <td>String</td>
+                <td>Freeform contextual field observations entered by the farmer.</td>
+              </tr>
+              <tr>
+                <td><code>sync_status</code></td>
+                <td>String</td>
+                <td>Local synchronization state: <code>'LOCAL_UNSYNCED' | 'SYNCED'</code>.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="subsection-title">7.3 Opportunistic Outbox Sync Worker</h3>
+        <p>
+          When network connectivity flickers back, an outbox background worker performs <strong>idempotent batch upserts</strong> to Supabase PostgreSQL (<code>ON CONFLICT (id) DO UPDATE</code>) and transfers high-resolution JPEGs to the cloud storage bucket without locking the farmer's UI. If transmission drops mid-flight, zero data is lost; writes simply pause and resume on the next connectivity window.
+        </p>
+      </section>
+
+      <!-- Section 8: Indic Audio & Knowledge Subsystems -->
+      <section class="section" id="indic-accessibility">
+        <h2 class="section-title"><span class="num">08.</span> Indic Accessibility &amp; Offline Knowledge Subsystems</h2>
+        
+        <h3 class="subsection-title">8.1 Native Android Indic Text-To-Speech (0 KB APK Footprint)</h3>
+        <p>
+          Rather than bundling heavy proprietary neural TTS models or relying on network-bound cloud audio synthesis APIs, KrishiRakshak directly bridges the underlying Android OS speech engine via <code>android.speech.tts.TextToSpeech</code>.
+        </p>
+        <p>
+          This achieves <strong>0 KB additional APK bloat</strong> while delivering instant, zero-latency audio vocalization across regional Indian languages:
+        </p>
+        <ul>
+          <li><strong>Locale Resolution Hierarchy:</strong> Resolves Marathi (<code>mr-IN</code>) $\rightarrow$ Hindi (<code>hi-IN</code>) $\rightarrow$ English (<code>en-IN</code>), gracefully adapting to the handset's preinstalled voice synthesis libraries.</li>
+          <li><strong>Markdown Speech Sanitization:</strong> Strips AST tokens, asterisks, bullet markers, and brackets before feeding clean phonemes into the audio queue.</li>
+        </ul>
+
+        <h3 class="subsection-title">8.2 Standalone Pathological Encyclopedia (&lt; 400 KB)</h3>
+        <p>
+          Bundled locally within the application assets is a complete agricultural encyclopedia containing clinical symptom descriptions, biological life cycles, and CIB&amp;RC chemical prevention schedules for all 40 registered pathologies—enabling farmers to research symptoms offline at any time.
+        </p>
+
+        <h3 class="subsection-title">8.3 1-Pixel = 0.1 km² Outbreak Risk Grid</h3>
+        <p>
+          Farmers can monitor regional infestation risks on a lightweight local matrix where each display pixel corresponds to a 0.1 square kilometer territory, providing intuitive risk visualization without heavy map tiles.
+        </p>
+      </section>
+
+      <!-- Section 9: Empirical Device Profiling -->
+      <section class="section" id="benchmarks">
+        <h2 class="section-title"><span class="num">09.</span> Empirical Device Profiling &amp; Hardware Benchmarks</h2>
+        <p>
+          To establish rigorous production baselines, the full KrishiRakshak release build was profiled directly on an Android virtualized environment with full operating system thread scheduling, JNI bridging, and hardware abstraction layer (HAL) overhead.
+        </p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Neural Pipeline Stage</th>
+                <th>Quantization</th>
+                <th>Input Tensor</th>
+                <th>Avg Latency</th>
+                <th>Min Latency</th>
+                <th>Max Latency</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Stage 1: YOLOv8n Leaf Detector</strong></td>
+                <td>INT8 Quantized</td>
+                <td>640 × 640 × 3</td>
+                <td><strong>216.76 ms</strong></td>
+                <td>114.53 ms</td>
+                <td>252.10 ms</td>
+              </tr>
+              <tr>
+                <td><strong>Stage 2: EfficientNet-Lite0 Classifier</strong></td>
+                <td>INT8 Quantized</td>
+                <td>224 × 224 × 3</td>
+                <td><strong>24.93 ms</strong></td>
+                <td>12.71 ms</td>
+                <td>32.40 ms</td>
+              </tr>
+              <tr>
+                <td><strong>Combined Pure Neural Inference</strong></td>
+                <td>Dual INT8</td>
+                <td>—</td>
+                <td><strong>241.68 ms</strong></td>
+                <td>127.30 ms</td>
+                <td>284.50 ms</td>
+              </tr>
+              <tr>
+                <td><strong>End-to-End Pipeline (EXIF + Crop + Math)</strong></td>
+                <td>Full Pipeline</td>
+                <td>Camera Buffer</td>
+                <td><strong>313.47 ms</strong></td>
+                <td>177.55 ms</td>
+                <td>348.20 ms</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-accent" style="margin-top: 1rem;">
+          <div class="callout-title">📊 Quantization Accuracy Delta &amp; Memory Savings</div>
+          <p>
+            Post-training INT8 quantization achieved a <strong>75% reduction in model weights</strong> (from ~18.8 MB in FP32 down to 4.7 MB in INT8 for EfficientNet), while the per-class macro-F1 score across all 40 agricultural disease cohorts dropped by <strong>less than 1.2%</strong> compared to unquantized FP32 baselines.
+          </p>
+        </div>
+
+        <h3 class="subsection-title">9.1 Production Release APK Footprint (15.08 MB)</h3>
+        <p>
+          By leveraging native ABI splitting (<code>arm64-v8a</code>), R8 full-mode tree-shaking, ProGuard bytecode minification, and Hermes ahead-of-time compilation, the total production release binary is compressed to just <strong>15.08 MB on disk</strong>:
+        </p>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Component Layer</th>
+                <th>Uncompressed</th>
+                <th>Compressed in APK</th>
+                <th>Optimization Technique</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>TFLite C++ Runtime &amp; Native <code>.so</code></td>
+                <td>~12.4 MB</td>
+                <td>~4.8 MB</td>
+                <td>Per-architecture ABI splitting (<code>arm64-v8a</code>)</td>
+              </tr>
+              <tr>
+                <td>Neural Model Weights (YOLO + EffNet)</td>
+                <td>~8.1 MB</td>
+                <td>~7.9 MB</td>
+                <td>Post-training INT8 symmetric quantization</td>
+              </tr>
+              <tr>
+                <td>Hermes JavaScript AOT Bytecode</td>
+                <td>~3.2 MB</td>
+                <td>~1.1 MB</td>
+                <td>Dead-code elimination &amp; bytecode stripping</td>
+              </tr>
+              <tr>
+                <td>Assets, Encyclopedia &amp; UI Fonts</td>
+                <td>~1.8 MB</td>
+                <td>~1.28 MB</td>
+                <td>Lossless WebP compression &amp; font subsetting</td>
+              </tr>
+              <tr>
+                <td><strong>Total Production APK</strong></td>
+                <td><strong>~25.5 MB</strong></td>
+                <td><strong>15.08 MB</strong></td>
+                <td><strong>Complete Production Optimization</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 10: 40-Class Disease Taxonomy -->
+      <section class="section" id="disease-taxonomy">
+        <h2 class="section-title"><span class="num">10.</span> 40-Class Canonical Disease Taxonomy Registry</h2>
+        <p>
+          KrishiRakshak prioritizes the 7 foundational crops that govern the agronomic economy of Maharashtra, covering 40 distinct pathological and healthy classes:
+        </p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Crop Cohort</th>
+                <th>Regional Importance</th>
+                <th>Pathological Classes &amp; Registered Conditions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Cotton (*Gossypium*)</strong></td>
+                <td>Vidarbha &amp; Marathwada Belts</td>
+                <td>Aphids, Armyworm, Bacterial Blight, Cotton Boll Rot, Green Cotton Boll, Healthy, Powdery Mildew, Target Spot</td>
+              </tr>
+              <tr>
+                <td><strong>Corn (*Zea mays*)</strong></td>
+                <td>Kharif &amp; Rabi Grain Supply</td>
+                <td>Cercospora Leaf Spot (Gray Leaf Spot), Common Rust, Northern Leaf Blight, Healthy</td>
+              </tr>
+              <tr>
+                <td><strong>Soybean (*Glycine max*)</strong></td>
+                <td>Central Oilseed Production</td>
+                <td>Soybean Diseased (Rust / Blight complex), Soybean Healthy</td>
+              </tr>
+              <tr>
+                <td><strong>Sugarcane (*Saccharum*)</strong></td>
+                <td>Western Maharashtra Sugar Belt</td>
+                <td>Caterpillar, Diabrotica speciosa, Healthy, Mosaic Virus, Red Rot, Rust, Yellow Leaf Disease</td>
+              </tr>
+              <tr>
+                <td><strong>Tomato (*Solanum lycopersicum*)</strong></td>
+                <td>Nashik &amp; Pune Horticulture</td>
+                <td>Bacterial Spot, Early Blight, Late Blight, Leaf Mold, Septoria Leaf Spot, Spider Mites, Target Spot, Tomato Mosaic Virus, Yellow Leaf Curl Virus, Healthy</td>
+              </tr>
+              <tr>
+                <td><strong>Grape (*Vitis vinifera*)</strong></td>
+                <td>Nashik Export Corridor</td>
+                <td>Black Rot, Esca (Black Measles), Leaf Blight (Isariopsis), Healthy</td>
+              </tr>
+              <tr>
+                <td><strong>Pomegranate (*Punica granatum*)</strong></td>
+                <td>Solapur &amp; Sangli Horticulture</td>
+                <td>Alternaria, Anthracnose, Bacterial Blight, Cercospora, Healthy</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 11: Central PostGIS Data Tier -->
+      <section class="section" id="cloud-database">
+        <h2 class="section-title"><span class="num">11.</span> Central PostGIS Database &amp; Cloud Architecture</h2>
+        <p>
+          The central persistence layer is powered by <strong>PostgreSQL 15</strong> with the <strong>PostGIS 3.3</strong> spatial extension. The database coordinates ingestion, spatial clustering, and the regulatory audit trail.
+        </p>
+
+        <h3 class="subsection-title">11.1 Relational Schema Architecture</h3>
+        <p>
+          The primary operational table is <code>public.field_reports</code>:
+        </p>
+        <pre><code>CREATE TABLE public.field_reports (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid REFERENCES public.profiles(id) ON DELETE CASCADE,
+  name text NOT NULL,
+  phone_number text,
+  image text,
+  crop_type text NOT NULL,
+  ai_diagnosis text NOT NULL,
+  probability real,
+  reviewed_by_expert boolean NOT NULL DEFAULT false,
+  location geography(Point, 4326) NOT NULL,
+  created_on timestamptz NOT NULL DEFAULT now(),
+  updated_at timestamptz NOT NULL DEFAULT now(),
+  expert_id uuid REFERENCES public.profiles(id),
+  reviewed_at timestamptz,
+  expert_diagnosis text,
+  verification_status text NOT NULL DEFAULT 'pending' 
+    CHECK (verification_status IN ('pending', 'auto_validated', 'validated', 'corrected')),
+  symptoms text,
+  notes text,
+  master_override boolean NOT NULL DEFAULT false
+);</code></pre>
+
+        <h3 class="subsection-title">11.2 High-Precision HEXEWKB Spatial Coordinate Decoding</h3>
+        <p>
+          PostGIS stores geographic points as 50-character Hexadecimal Extended Well-Known Binary (HEXEWKB) strings using the WGS 84 spatial reference identifier (SRID 4326):
+        </p>
+        <pre><code>0101000020E6100000 + [16 Hex chars: Float64 Longitude] + [16 Hex chars: Float64 Latitude]</code></pre>
+        <p>
+          Both our Node.js and Python backend engines implement high-speed binary IEEE 754 decoding to parse native float coordinates in sub-microsecond time without relying on heavy external GIS abstractions.
+        </p>
+
+        <h3 class="subsection-title">11.3 Verification Lifecycle Trigger (<code>trg_field_report_triage</code>)</h3>
+        <p>
+          To maintain data integrity and enforce verification workflows, a database trigger executes <code>BEFORE INSERT OR UPDATE</code> on <code>public.field_reports</code>:
+        </p>
+        <ul>
+          <li><strong>Auto-Validation:</strong> If a report is inserted with high AI confidence ($P \ge 0.70$), it defaults to <code>verification_status = 'auto_validated'</code>.</li>
+          <li><strong>Pending Triage:</strong> Scans with $P < 0.70$ or flagged anomalies enter <code>verification_status = 'pending'</code>, routing to extension workers.</li>
+          <li><strong>Expert Audit Immutability:</strong> When an agronomist reviews a report, <code>expert_diagnosis</code> and <code>expert_id</code> are written, but the original <code>ai_diagnosis</code> is never altered, guaranteeing an immutable audit trail for model evaluation.</li>
+        </ul>
+      </section>
+
+      <!-- Section 12: Spatial Hotspot Clustering -->
+      <section class="section" id="spatial-hotspots">
+        <h2 class="section-title"><span class="num">12.</span> Spatial Hotspot Clustering Engine (<code>get_active_hotspots()</code>)</h2>
+        <p>
+          Agricultural epidemics require macro-level spatial aggregation. Rather than pulling thousands of raw points to browser clients, PostGIS computes spatial clusters directly in the database engine via the <code>public.get_active_hotspots()</code> RPC:
+        </p>
+
+        <div class="callout callout-accent">
+          <div class="callout-title">🛰️ Spatial Density Clustering Parameters</div>
+          <p>
+            The engine groups confirmed disease reports using a spatial proximity threshold of <strong>10 kilometers</strong> (via <code>ST_DWithin</code> on spheroidal WGS 84 coordinates) across a temporal window of <strong>72 hours</strong>, requiring a minimum quorum of <strong>$\ge 3$ distinct farmer reports</strong> before escalating to an active outbreak hotspot.
+          </p>
+        </div>
+
+        <p>
+          Furthermore, fuzzy matching automatically strips out healthy crop submissions from outbreak counts, ensuring that command center alerts represent genuine biological threats.
+        </p>
+      </section>
+
+      <!-- Section 13: Hybrid Decoupled Backend Architecture -->
+      <section class="section" id="hybrid-backend">
+        <h2 class="section-title"><span class="num">13.</span> Hybrid Decoupled Backend Architecture</h2>
+        <p>
+          To achieve sub-10ms UI responsiveness while executing heavy mathematical and geospatial algorithms, KrishiRakshak separates backend responsibilities into a <strong>BFF Gateway Tier</strong> and a <strong>Scientific Computing Core</strong>:
+        </p>
+
+        <div class="diagram-container">
+          <div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor Officer as District Agricultural Officer
+    participant Browser as Command Center Portal
+    participant NodeGateway as Node.js BFF Gateway (Port 3000)
+    participant Postgres as Supabase (PostgreSQL / PostGIS)
+    participant FastAPICore as FastAPI Scientific Core (Port 8000)
+
+    Officer->>Browser: Opens Cadastral Radar (Nashik Taluka)
+    Browser->>NodeGateway: GET /api/radar/data?district=Nashik&radiusKm=10
+    par Non-Blocking I/O
+        NodeGateway->>Postgres: Query Active Reports (HEXEWKB points)
+        Postgres-->>NodeGateway: 42 field reports
+        NodeGateway->>Postgres: Query Pheromone Trap Counts
+        Postgres-->>NodeGateway: Trap counts & threshold status
+    end
+    NodeGateway->>FastAPICore: POST /compute/radar-matrix (Internal Loopback RPC)
+    Note over FastAPICore: Vectorized Scientific Math (NumPy/SciPy)<br/>1. KD-Tree Spatial Clustering<br/>2. Gaussian Plume Dispersion Integration<br/>3. Sentinel-2 NDVI Stress Calculation
+    FastAPICore-->>NodeGateway: 200 OK { hotspots: [...], trajectories: [...], ndviGrid: [...] }
+    NodeGateway-->>Browser: Aggregated JSON Response (Sub-25ms Roundtrip)
+    Browser->>Officer: Renders Cadastral Parcels (~35m x 35m) & Dispersion Cones
+          </div>
+          <div class="diagram-caption">Figure 13.1: Hybrid decoupled communication lifecycle between Node.js BFF gateway and Python FastAPI scientific sidecar.</div>
+        </div>
+
+        <ul style="margin-top: 1rem;">
+          <li><strong>Node.js Express BFF Gateway (Port 3000):</strong> Handles high-concurrency non-blocking I/O, static asset hosting, authentication handshakes, and PostgREST connection pooling. Relieves the web layer of mathematical computation so UI navigation never stalls.</li>
+          <li><strong>Python FastAPI Scientific Core (Port 8000):</strong> Operates as a vectorized mathematical microservice leveraging NumPy, SciPy, Shapely, and GeoPandas to compute differential plume advection equations and raster matrix math, completely isolated from direct public Internet exposure.</li>
+        </ul>
+      </section>
+
+      <!-- Section 14: Government Command Center -->
+      <section class="section" id="command-center">
+        <h2 class="section-title"><span class="num">14.</span> Government Command Center (4-View Intelligence Suite)</h2>
+        <p>
+          The web portal provides state and district officials with an integrated four-view operational intelligence suite:
+        </p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>View Module</th>
+                <th>Target User</th>
+                <th>Core Capabilities &amp; Agronomic Workflow</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1. Executive Dashboard (<code>dashboard.html</code>)</strong></td>
+                <td>State Directors &amp; DAOs</td>
+                <td>High-level macro KPIs, district-level disease breakdown, live outbreak alerts, and real-time weather telemetric overlays.</td>
+              </tr>
+              <tr>
+                <td><strong>2. Agronomist Verification Queue (<code>queue.html</code>)</strong></td>
+                <td>Extension Workers &amp; Field Officers</td>
+                <td>Triage queue capturing $P < 0.70$ edge scans. Features <strong>400% pan-zoom leaf inspection</strong>, symptom badge review, clinical diagnosis override, and automated Marathi DLT SMS dispatch.</td>
+              </tr>
+              <tr>
+                <td><strong>3. Cadastral Plot Radar (<code>radar.html</code>)</strong></td>
+                <td>Sub-District Agronomists</td>
+                <td>Sub-meter farm parcel grid (~35m × 35m) fusing multi-spectral Sentinel-2 NDVI telemetry with ground truth reports to identify pre-symptomatic stress.</td>
+              </tr>
+              <tr>
+                <td><strong>4. GIS Surveillance Command (<code>surveillance.html</code>)</strong></td>
+                <td>Epidemiologists</td>
+                <td>Macro-GIS vector maps rendering 10 km PostGIS outbreak circles, live atmospheric wind vectors, and multi-horizon dispersion trajectory cones.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 15: Epidemiological Spread Modeling -->
+      <section class="section" id="spread-modeling">
+        <h2 class="section-title"><span class="num">15.</span> Epidemiological Spread Modeling &amp; Mathematical Physics</h2>
+        <p>
+          Biological outbreaks do not disperse in uniform radial circles. Airborne fungal spores (e.g. <em>Plasmopara viticola</em> / Downy Mildew) and migratory pests (e.g. <em>Spodoptera frugiperda</em> / Fall Armyworm) disperse governed by atmospheric physics and biological thermal kinetics.
+        </p>
+
+        <h3 class="subsection-title">15.1 Atmospheric Gaussian Plume Advection Physics</h3>
+        <p>
+          Downwind airborne spore concentration is governed by the steady-state Gaussian plume advection equation:
+        </p>
+
+        <div class="math-block">
+          $$C(x, y, z) = \frac{Q}{2\pi u \sigma_y \sigma_z} \exp\left(-\frac{y^2}{2\sigma_y^2}\right) \left[ \exp\left(-\frac{(z - H)^2}{2\sigma_z^2}\right) + \exp\left(-\frac{(z + H)^2}{2\sigma_z^2}\right) \right]$$
+        </div>
+
+        <p>Where:</p>
+        <ul>
+          <li>$C(x, y, z)$: Downwind spore concentration at coordinates $(x, y, z)$ in $\text{particles/m}^3$.</li>
+          <li>$Q$: Source release rate (spores/sec) dynamically derived from verified cluster volume.</li>
+          <li>$u$: Mean atmospheric wind velocity at canopy release height ($m/s$).</li>
+          <li>$H$: Effective release height ($H = h_c + \Delta h$).</li>
+          <li>$\sigma_y, \sigma_z$: Pasquill-Gifford lateral and vertical dispersion coefficients expanding as a function of downwind distance $x$: $\sigma_y(x) = a \cdot x^b, \sigma_z(x) = c \cdot x^d$.</li>
+        </ul>
+
+        <h3 class="subsection-title">15.2 Growing Degree-Day (GDD) Phenological Accumulation</h3>
+        <p>
+          Physical spore transport is coupled with pathogen biology. Insect pupation and fungal sporulation kinetics depend strictly on thermal energy accumulation above a baseline temperature threshold ($T_{base}$):
+        </p>
+
+        <div class="math-block">
+          $$GDD = \max\left(0, \frac{T_{max} + T_{min}}{2} - T_{base}\right)$$
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Pathogen / Pest Vector</th>
+                <th>Target Crop</th>
+                <th>Base Temp ($T_{base}$)</th>
+                <th>Critical Degree-Days ($GDD_{crit}$)</th>
+                <th>Wind Dispersion Multiplier</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Fall Armyworm (*S. frugiperda*)</strong></td>
+                <td>Maize (Corn)</td>
+                <td>10.0 °C</td>
+                <td>140 GDD (Larval Instar 3)</td>
+                <td>1.85 × WindSpeed</td>
+              </tr>
+              <tr>
+                <td><strong>Pink Bollworm (*P. gossypiella*)</strong></td>
+                <td>Bt-Cotton</td>
+                <td>12.0 °C</td>
+                <td>210 GDD (Adult Moth Flight)</td>
+                <td>1.20 × WindSpeed</td>
+              </tr>
+              <tr>
+                <td><strong>Downy Mildew (*P. viticola*)</strong></td>
+                <td>Grapes</td>
+                <td>8.0 °C</td>
+                <td>60 GDD (Sporangia Release)</td>
+                <td>2.40 × WindSpeed</td>
+              </tr>
+              <tr>
+                <td><strong>Soybean Rust (*P. pachyrhizi*)</strong></td>
+                <td>Soybean</td>
+                <td>15.0 °C</td>
+                <td>95 GDD (Uredinia Pustule Burst)</td>
+                <td>2.80 × WindSpeed</td>
+              </tr>
+              <tr>
+                <td><strong>Early Blight (*A. solani*)</strong></td>
+                <td>Tomato</td>
+                <td>10.0 °C</td>
+                <td>80 GDD (Conidiophore Release)</td>
+                <td>1.50 × WindSpeed</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="subsection-title">15.3 Multi-Horizon Advection Vector Modeling (24h, 48h, 72h)</h3>
+        <p>
+          For each active outbreak centroid $(x_0, y_0)$, horizontal drift vectors are computed across predictive horizons $t \in \{24, 48, 72\}\text{ hours}$:
+        </p>
+
+        <div class="math-block">
+          $$\Delta x(t) = \sum_{\tau=1}^t u(\tau) \cdot \cos(\theta(\tau)) \cdot \Delta \tau, \quad \Delta y(t) = \sum_{\tau=1}^t u(\tau) \cdot \sin(\theta(\tau)) \cdot \Delta \tau$$
+        </div>
+        <p>
+          The resulting risk zones are rendered on the surveillance map as directional ellipses stretched along the resultant wind vector, giving extension officers advance intelligence on which downstream talukas to scout before symptoms appear.
+        </p>
+      </section>
+
+      <!-- Section 16: Statutory Compliance -->
+      <section class="section" id="statutory-compliance">
+        <h2 class="section-title"><span class="num">16.</span> Statutory Compliance &amp; CIB&amp;RC Chemical Formulations</h2>
+        <p>
+          Chemical pesticide recommendations are never generated by unconstrained language models. All prescribed regimens are strictly governed by active ingredient standards registered with the <strong>Central Insecticides Board &amp; Registration Committee (CIB&amp;RC)</strong> under the Insecticides Act, 1968.
+        </p>
+
+        <h3 class="subsection-title">16.1 Mathematical Knapsack Dilution Math</h3>
+        <div class="math-block">
+          $$V_{formulation} = \frac{\text{Acreage} \times \text{Dose}_{ha}}{\text{Concentration}_{ai}}, \quad \text{Satchels} = \frac{V_{formulation}}{\text{Tank}_{capacity} \times \text{Dilution}_{ratio}}$$
+        </div>
+
+        <h3 class="subsection-title">16.2 Pre-Harvest Interval (PHI) &amp; Weather-Gated Spray Windows</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Crop &amp; Disease</th>
+                <th>CIB&amp;RC Chemical Regimen</th>
+                <th>Dose per Hectare</th>
+                <th>Statutory PHI</th>
+                <th>Weather Constraints</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Tomato Early Blight</strong></td>
+                <td>Mancozeb 75% WP</td>
+                <td>1.5 – 2.0 kg</td>
+                <td>7 Days</td>
+                <td>Wind &lt; 15 km/h, Rain Prob &lt; 30%</td>
+              </tr>
+              <tr>
+                <td><strong>Grape Downy Mildew</strong></td>
+                <td>Metalaxyl 8% + Mancozeb 64% WP</td>
+                <td>2.5 kg</td>
+                <td>40 Days</td>
+                <td>Wind &lt; 12 km/h, No immediate rain</td>
+              </tr>
+              <tr>
+                <td><strong>Cotton Bollworm</strong></td>
+                <td>Emamectin Benzoate 5% SG</td>
+                <td>220 g</td>
+                <td>14 Days</td>
+                <td>Wind &lt; 10 km/h, High Temp gate</td>
+              </tr>
+              <tr>
+                <td><strong>Soybean Rust</strong></td>
+                <td>Hexaconazole 5% EC</td>
+                <td>1.0 L</td>
+                <td>30 Days</td>
+                <td>Wind &lt; 15 km/h, Dry foliage</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 17: Strategic Technical Roadmap -->
+      <section class="section" id="roadmap">
+        <h2 class="section-title"><span class="num">17.</span> Strategic Technical Roadmap</h2>
+        <p>
+          While the current release delivers a fully operational edge-to-cloud diagnostic and surveillance prototype, our engineering architecture is designed for phased national expansion:
+        </p>
+
+        <div class="callout callout-accent">
+          <div class="callout-title">🚀 Phase 1: Institutional Datasets &amp; Multi-State Expansion</div>
+          <p>
+            Expand from our current 7-crop baseline to a comprehensive 24-crop taxonomy covering all Indian agro-climatic zones by integrating verified training datasets from the Indian Council of Agricultural Research (ICAR) and Krishi Vigyan Kendras (KVKs).
+          </p>
+        </div>
+
+        <div class="callout" style="margin-top: 0.75rem;">
+          <div class="callout-title">⚡ Phase 2: Hardware NPU Acceleration &amp; Continual Learning</div>
+          <p>
+            Deploy native Neural Networks API (NNAPI) and Qualcomm Neural Processing Engine (QNN) delegates to leverage dedicated NPU silicon on mid-tier chipsets, reducing Stage 1 YOLO inference from ~216 ms down to sub-50 ms. Implement on-device continual learning with federated parameter updates.
+          </p>
+        </div>
+
+        <div class="callout callout-amber" style="margin-top: 0.75rem;">
+          <div class="callout-title">📡 Phase 3: Autonomous IoT Pheromone Traps &amp; Drone Multispectral Telemetry</div>
+          <p>
+            Integrate solar-powered LoRaWAN pheromone traps that automatically transmit hourly insect count telemetry directly into our Cadastral Plot Radar. Ingest drone multispectral imagery (NDRE, Red-Edge bands) to detect sub-canopy wilt before foliar symptoms manifest.
+          </p>
+        </div>
+
+        <div class="callout" style="margin-top: 0.75rem;">
+          <div class="callout-title">🏛️ Phase 4: National AgriStack Integration &amp; Multilingual IVR Broadcasts</div>
+          <p>
+            Interface directly with the Government of India's AgriStack registry (Digital Farmer ID and Unified Farmer Service Interface) to automate land-parcel verified advisories and launch automated Interactive Voice Response (IVR) phone calls in 12 regional languages.
+          </p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Floating Back to Top Button -->
+  <a href="#" class="back-to-top" title="Back to top">↑</a>
+
+</body>
+</html>
