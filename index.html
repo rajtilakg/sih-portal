@@ -264,6 +264,55 @@
       line-height: 1.5;
     }
 
+    /* Detailed Architecture Showcase Box */
+    .architecture-box {
+      background: linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(30, 41, 59, 0.6) 100%);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      border-radius: 0.85rem;
+      padding: 1.75rem;
+      box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.2);
+    }
+
+    .arch-box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .arch-box-header h2 {
+      font-size: 1.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .arch-features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 0.75rem;
+      margin: 1.25rem 0;
+    }
+
+    .arch-feat-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 0.5rem;
+      padding: 0.85rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .arch-feat-item strong {
+      color: var(--text-main);
+      display: block;
+      margin-bottom: 0.2rem;
+      font-size: 0.9rem;
+    }
+
     /* Generic Card */
     .card {
       background: var(--card-bg);
@@ -355,15 +404,6 @@
       border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    footer a {
-      color: #60a5fa;
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-
     @media (max-width: 640px) {
       .hero h1 {
         font-size: 2.1rem;
@@ -401,7 +441,7 @@
           📱 Download APK (15 MB)
         </a>
 
-        <a href="architecture.html" class="btn btn-secondary">
+        <a href="#architecture" class="btn btn-secondary">
           🏗️ View Detailed Architecture
         </a>
 
@@ -450,8 +490,49 @@
         </iframe>
       </div>
       <p class="video-caption">
-        Walkthrough covering production engineering benchmarks, on-device INT8 quantization deltas, WatermelonDB offline persistence, PostGIS spatial clustering, and the central agricultural surveillance command center.
+        Technical walkthrough covering production engineering benchmarks, on-device INT8 quantization deltas, WatermelonDB offline persistence, PostGIS spatial clustering, and the central agricultural surveillance command center.
       </p>
+    </section>
+
+    <!-- Dedicated Architecture Box (REFERENCED DIRECTLY FROM HERO BUTTON) -->
+    <section class="architecture-box" id="architecture">
+      <div class="arch-box-header">
+        <div>
+          <span class="badge" style="margin-bottom: 0.4rem;">Engineering Deep Dive</span>
+          <h2>🏗️ Complete Production Architecture &amp; Specification</h2>
+        </div>
+        <a href="architecture.html" class="btn btn-dashboard" style="padding: 0.75rem 1.4rem; font-size: 0.95rem;">
+          Open Architecture Blueprint &rarr;
+        </a>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.98rem;">
+        An exhaustive, 17-section technical engineering blueprint detailing our offline-first edge AI pipeline, dual-stage INT8 quantization on low-tier silicon, WatermelonDB SQLite sync engine, PostGIS 10 km spatial clustering, and atmospheric Gaussian plume dispersion physics.
+      </p>
+
+      <div class="arch-features-grid">
+        <div class="arch-feat-item">
+          <strong>⚡ Edge Sovereignty</strong>
+          YOLOv8n + EfficientNet-Lite0 on-device INT8 inference under 25 ms with zero server reliance.
+        </div>
+        <div class="arch-feat-item">
+          <strong>💾 Offline Persistence</strong>
+          WatermelonDB SQLite Schema v4 with client v4 UUIDs and opportunistic background outbox sync.
+        </div>
+        <div class="arch-feat-item">
+          <strong>🛰️ Spatial Surveillance</strong>
+          PostGIS 10 km density clustering, cadastral parcel radar (~35m), and extension worker triage.
+        </div>
+        <div class="arch-feat-item">
+          <strong>🔬 Epidemic Physics</strong>
+          Atmospheric Gaussian plume equations coupled with thermal degree-day (GDD) advection vectors.
+        </div>
+      </div>
+
+      <div style="text-align: right; margin-top: 0.75rem;">
+        <a href="architecture.html" style="color: #60a5fa; font-weight: 600; text-decoration: none; font-size: 0.92rem;">
+          View full interactive diagrams, database schemas, and equations &rarr;
+        </a>
+      </div>
     </section>
 
     <!-- Problem Statement Card -->
@@ -487,8 +568,7 @@
     </section>
 
     <footer>
-      Submitted for Smart India Hackathon &bull; Built with focus on accessibility &amp; performance &bull;
-      <a href="architecture.html">Read the Complete Architectural Specification &rarr;</a>
+      Submitted for Smart India Hackathon &bull; Built with focus on accessibility &amp; performance
     </footer>
   </div>
 
