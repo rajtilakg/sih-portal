@@ -357,11 +357,23 @@
       color: var(--text-main);
     }
 
-    /* Team Grid */
+    /* Team Grid - Enforced 2x3 Matrix */
     .team-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .member-card {
@@ -425,7 +437,7 @@
     <header class="hero">
       <div class="badge-group">
         <span class="badge">Smart India Hackathon</span>
-        <span class="badge badge-gov">Govt of Maharashtra &bull; SIH-26131</span>
+        <span class="badge badge-gov">For Govt of Maharashtra &bull; SIH-26131</span>
       </div>
       
       <h1>KrishiRakshak</h1>
@@ -443,10 +455,6 @@
 
         <a href="#architecture" class="btn btn-secondary">
           🏗️ View Detailed Architecture
-        </a>
-
-        <a href="#video-demo" class="btn btn-secondary">
-          🎥 Watch Demo Video
         </a>
       </div>
     </header>
@@ -483,7 +491,7 @@
       </div>
       <div class="video-wrapper">
         <iframe 
-          src="https://www.youtube-nocookie.com/embed/S7bNwsfHX_4?rel=0" 
+          src="https://www.youtube-nocookie.com/embed/S7bNwsfHX_4?rel=0&amp;vq=hd1080" 
           title="KrishiRakshak — System Architecture &amp; Live Walkthrough" 
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
           allowfullscreen>
