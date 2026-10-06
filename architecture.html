@@ -438,6 +438,20 @@
       cursor: grabbing;
     }
 
+    .diagram-scroll-window.large-window {
+      max-height: 740px;
+    }
+
+    #modal-svg-container img {
+      width: 90vw;
+      max-width: 1750px;
+      height: auto;
+      border-radius: 8px;
+      display: block;
+      margin: 0 auto;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    }
+
     .diagram-canvas {
       display: inline-block;
       min-width: 100%;
@@ -882,6 +896,9 @@
       <ul class="toc-list">
         <li><a href="#executive-summary" class="toc-link">1. Executive Summary &amp; Two Loops</a></li>
         <li><a href="#system-topology" class="toc-link">2. Unified System Topology</a></li>
+        <li style="padding-left: 0.85rem;"><a href="#visual-blueprints" class="toc-link" style="color: #60a5fa; font-size: 0.8rem;">↳ Visual Architecture &amp; Stack</a></li>
+        <li style="padding-left: 0.85rem;"><a href="#structural-topology" class="toc-link" style="font-size: 0.8rem;">↳ Code-Level Tier Topology</a></li>
+        <li style="padding-left: 0.85rem;"><a href="#diagnostic-lifecycle" class="toc-link" style="font-size: 0.8rem;">↳ 17-Step Lifecycle Sequence</a></li>
         <li><a href="#mobile-client" class="toc-link">3. Mobile Edge Engineering</a></li>
         <li><a href="#edge-ml-pipeline" class="toc-link">4. On-Device Two-Stage ML</a></li>
         <li><a href="#exif-canonicalization" class="toc-link">5. Deterministic Preprocessing</a></li>
@@ -967,6 +984,63 @@
           The system spans three interconnected production tiers: the <strong>Offline Mobile Edge Client</strong>, the <strong>Central Cloud Infrastructure</strong> (Supabase PostgreSQL + PostGIS), and the <strong>Government Command Center with Hybrid Decoupled Backends</strong>.
         </p>
 
+        <!-- Visual Blueprints Subsection (High-Resolution Vector Diagrams) -->
+        <div id="visual-blueprints" style="display: flex; flex-direction: column; gap: 1.75rem; margin-top: 0.5rem; margin-bottom: 1.5rem;">
+          
+          <div class="callout callout-accent" style="margin-bottom: 0;">
+            <div class="callout-title">🗺️ Visual Architectural Blueprints (Executive &amp; Reviewer Overview)</div>
+            <p>
+              For rapid evaluation, clarity, and presentation review, the high-resolution vector blueprints below illustrate KrishiRakshak's distributed architecture and full technology stack at a glance, providing an immediate, easy-to-read alternative to raw textual flowcharts.
+            </p>
+          </div>
+
+          <!-- Diagram 2.0A: System Architecture Blueprint -->
+          <div class="diagram-container" id="container-visual-arch">
+            <div class="diagram-toolbar">
+              <span class="diagram-tag">Figure 2.0A &bull; System Architecture Blueprint &amp; 9-Step Report Flow</span>
+              <div class="diagram-btn-group">
+                <button class="btn-diag" onclick="zoomDiag('canvas-visual-arch', 1.25)" title="Zoom In">🔍 +</button>
+                <button class="btn-diag" onclick="zoomDiag('canvas-visual-arch', 0.8)" title="Zoom Out">🔍 −</button>
+                <button class="btn-diag" onclick="resetDiag('canvas-visual-arch')" title="Reset View">↺ Reset</button>
+                <button class="btn-diag" onclick="openFullscreenDiag('canvas-visual-arch', 'Figure 2.0A • System Architecture Blueprint &amp; 9-Step Report Journey')" title="Expand Fullscreen">⛶ Fullscreen</button>
+                <a href="assets/krishirakshak_architecture_v9.svg" target="_blank" rel="noopener noreferrer" class="btn-diag" title="Open Vector SVG in New Tab" style="text-decoration:none;">↗ Open SVG</a>
+              </div>
+            </div>
+            <div class="diagram-scroll-window large-window" id="window-visual-arch">
+              <div class="diagram-canvas" id="canvas-visual-arch">
+                <img src="assets/krishirakshak_architecture_v9.svg" onerror="this.onerror=null; this.src='krishirakshak_architecture_v9.svg';" alt="KrishiRakshak System Architecture Diagram" draggable="false" style="user-select: none; -webkit-user-drag: none; pointer-events: none; width: 100%; max-width: 1400px; height: auto; display: block; margin: 0 auto; border-radius: 6px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);" />
+              </div>
+            </div>
+            <div class="diagram-caption">Figure 2.0A: End-to-end system architecture illustrating the Offline Farmer Phone, Cloud PostGIS Data Tier, Dual Backend Services (FastAPI + Node.js), and Government Officer Command Center with the 9-step incident journey.</div>
+          </div>
+
+          <!-- Diagram 2.0B: Complete Technology Stack Matrix -->
+          <div class="diagram-container" id="container-visual-techstack">
+            <div class="diagram-toolbar">
+              <span class="diagram-tag">Figure 2.0B &bull; Comprehensive Technology Stack Matrix</span>
+              <div class="diagram-btn-group">
+                <button class="btn-diag" onclick="zoomDiag('canvas-visual-techstack', 1.25)" title="Zoom In">🔍 +</button>
+                <button class="btn-diag" onclick="zoomDiag('canvas-visual-techstack', 0.8)" title="Zoom Out">🔍 −</button>
+                <button class="btn-diag" onclick="resetDiag('canvas-visual-techstack')" title="Reset View">↺ Reset</button>
+                <button class="btn-diag" onclick="openFullscreenDiag('canvas-visual-techstack', 'Figure 2.0B • Comprehensive Technology Stack Matrix')" title="Expand Fullscreen">⛶ Fullscreen</button>
+                <a href="assets/krishirakshak_tech_stack_v2.svg" target="_blank" rel="noopener noreferrer" class="btn-diag" title="Open Vector SVG in New Tab" style="text-decoration:none;">↗ Open SVG</a>
+              </div>
+            </div>
+            <div class="diagram-scroll-window large-window" id="window-visual-techstack">
+              <div class="diagram-canvas" id="canvas-visual-techstack">
+                <img src="assets/krishirakshak_tech_stack_v2.svg" onerror="this.onerror=null; this.src='krishirakshak_tech_stack_v2.svg';" alt="KrishiRakshak Technology Stack Matrix" draggable="false" style="user-select: none; -webkit-user-drag: none; pointer-events: none; width: 100%; max-width: 1400px; height: auto; display: block; margin: 0 auto; border-radius: 6px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);" />
+              </div>
+            </div>
+            <div class="diagram-caption">Figure 2.0B: Full stack matrix detailing the offline model pipeline (PyTorch, YOLOv8n, EfficientNet-Lite0 INT8), client runtime (React Native 0.74, Hermes, WatermelonDB SQLite), cloud infrastructure (PostgreSQL 15 + PostGIS 3.3, S3), scientific computing engines, and surveillance dashboard.</div>
+          </div>
+
+        </div>
+
+        <h3 class="subsection-title" id="structural-topology" style="margin-top: 1rem;">2.1 Multi-Tier Structural Topology</h3>
+        <p>
+          For formal code-level specifications, node relationships and inter-tier communication protocols are codified in the flowchart below:
+        </p>
+
         <!-- Diagram 2.1 Container with Pan-Zoom Controls -->
         <div class="diagram-container" id="container-2-1">
           <div class="diagram-toolbar">
@@ -1042,7 +1116,7 @@ flowchart TD
           <div class="diagram-caption">Figure 2.1: Unified architectural topology across edge mobile client, cloud storage, hybrid backend, and government surveillance portals. Use zoom controls to inspect details.</div>
         </div>
 
-        <h3 class="subsection-title">2.1 End-to-End Diagnostic &amp; Epidemiological Lifecycle</h3>
+        <h3 class="subsection-title" id="diagnostic-lifecycle">2.2 End-to-End Diagnostic &amp; Epidemiological Lifecycle</h3>
         <p>
           The journey of an agronomic diagnostic vector—from an on-field camera shutter click in a remote taluka to state-level surveillance intervention—is executed across 17 deterministic steps:
         </p>
