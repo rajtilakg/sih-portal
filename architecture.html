@@ -143,11 +143,14 @@
 
     /* Main Layout with Sidebar */
     .layout-container {
-      max-width: 1400px;
-      margin: 0 auto;
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
       display: flex;
-      padding: 2rem 1.5rem;
-      gap: 2.5rem;
+      padding: 1.5rem 2rem;
+      gap: 2rem;
+      box-sizing: border-box;
+      position: relative;
     }
 
     /* Sidebar Table of Contents */
@@ -423,15 +426,19 @@
 
     .diagram-scroll-window {
       width: 100%;
-      min-height: 280px;
-      max-height: 600px;
-      overflow: auto;
+      min-height: 320px;
+      max-height: 720px;
+      overflow: hidden;
       background: #090e1a;
       border-radius: 0.5rem;
       border: 1px solid rgba(255, 255, 255, 0.04);
-      padding: 1rem;
+      padding: 0;
       cursor: grab;
       position: relative;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .diagram-scroll-window:active {
@@ -439,25 +446,39 @@
     }
 
     .diagram-scroll-window.large-window {
-      max-height: 740px;
-    }
-
-    #modal-svg-container img {
-      width: 90vw;
-      max-width: 1750px;
-      height: auto;
-      border-radius: 8px;
-      display: block;
-      margin: 0 auto;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+      max-height: 800px;
     }
 
     .diagram-canvas {
-      display: inline-block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
       min-width: 100%;
-      transform-origin: top center;
-      transition: transform 0.12s ease-out;
+      height: 100%;
+      min-height: 320px;
+      transform-origin: center center;
+      transition: transform 0.08s ease-out;
       text-align: center;
+      position: relative;
+      user-select: none;
+    }
+
+    .diagram-canvas img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .diagram-canvas svg {
+      max-width: 100% !important;
+      height: auto !important;
+      pointer-events: none;
     }
 
     .diagram-caption {
@@ -722,9 +743,50 @@
 
     .diag-modal-body {
       flex: 1;
-      overflow: auto;
-      padding: 2rem;
+      overflow: hidden;
+      padding: 0;
       text-align: center;
+      position: relative;
+      cursor: grab;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #060a14;
+    }
+
+    .diag-modal-body:active {
+      cursor: grabbing;
+    }
+
+    #modal-svg-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      transform-origin: center center;
+      transition: transform 0.08s ease-out;
+      position: relative;
+      user-select: none;
+    }
+
+    #modal-svg-container img {
+      width: 90vw;
+      max-width: none;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      pointer-events: none;
+      border-radius: 8px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    #modal-svg-container svg {
+      max-width: none !important;
+      width: 90vw !important;
+      height: auto !important;
+      pointer-events: none;
     }
 
     .btn-close-modal {
@@ -894,9 +956,9 @@
     <aside class="sidebar">
       <div class="toc-title">Architecture Blueprint</div>
       <ul class="toc-list">
+        <li><a href="#visual-blueprints" class="toc-link" style="color: #60a5fa; font-weight: 600;">★ Visual Architecture &amp; Stack</a></li>
         <li><a href="#executive-summary" class="toc-link">1. Executive Summary &amp; Two Loops</a></li>
         <li><a href="#system-topology" class="toc-link">2. Unified System Topology</a></li>
-        <li style="padding-left: 0.85rem;"><a href="#visual-blueprints" class="toc-link" style="color: #60a5fa; font-size: 0.8rem;">↳ Visual Architecture &amp; Stack</a></li>
         <li style="padding-left: 0.85rem;"><a href="#structural-topology" class="toc-link" style="font-size: 0.8rem;">↳ Code-Level Tier Topology</a></li>
         <li style="padding-left: 0.85rem;"><a href="#diagnostic-lifecycle" class="toc-link" style="font-size: 0.8rem;">↳ 17-Step Lifecycle Sequence</a></li>
         <li><a href="#mobile-client" class="toc-link">3. Mobile Edge Engineering</a></li>
@@ -932,6 +994,54 @@
           An exhaustive systems engineering specification detailing our offline-first edge AI diagnostic client, relational PostGIS surveillance tier, hybrid decoupled backend gateway, and mathematical epidemic dispersion engine.
         </p>
       </header>
+
+      <!-- Master Visual Architectural Blueprints (Full Width) -->
+      <section class="section" id="visual-blueprints" style="position: relative; width: 100%; margin-bottom: 0.5rem;">
+        <h2 class="section-title"><span class="num">★</span> Master Architectural Blueprints &amp; Technology Stack</h2>
+        <p>
+          For executive clarity, high-level evaluation, and committee walkthroughs, the interactive vector blueprints below illustrate KrishiRakshak's distributed edge-to-cloud architecture and production technology stack at a glance. Use the interactive controls to pan and zoom smoothly in 2D space, or click fullscreen for an expanded view.
+        </p>
+
+        <!-- Diagram 0.1: System Architecture Blueprint -->
+        <div class="diagram-container" id="container-visual-arch">
+          <div class="diagram-toolbar">
+            <span class="diagram-tag">Figure 0.1 &bull; System Architecture Blueprint &amp; 9-Step Report Journey</span>
+            <div class="diagram-btn-group">
+              <button class="btn-diag" onclick="zoomDiag('canvas-visual-arch', 1.25)" title="Zoom In">🔍 +</button>
+              <button class="btn-diag" onclick="zoomDiag('canvas-visual-arch', 0.8)" title="Zoom Out">🔍 −</button>
+              <button class="btn-diag" onclick="resetDiag('canvas-visual-arch')" title="Reset View">↺ Reset</button>
+              <button class="btn-diag" onclick="openFullscreenDiag('canvas-visual-arch', 'Figure 0.1 • System Architecture Blueprint &amp; 9-Step Report Journey')" title="Expand Fullscreen">⛶ Fullscreen</button>
+              <a href="assets/krishirakshak_architecture_v9.svg" target="_blank" rel="noopener noreferrer" class="btn-diag" title="Open Vector SVG in New Tab" style="text-decoration:none;">↗ Open SVG</a>
+            </div>
+          </div>
+          <div class="diagram-scroll-window large-window" id="window-visual-arch">
+            <div class="diagram-canvas" id="canvas-visual-arch">
+              <img src="assets/krishirakshak_architecture_v9.svg" onerror="this.onerror=null; this.src='krishirakshak_architecture_v9.svg';" alt="KrishiRakshak System Architecture Diagram" draggable="false" />
+            </div>
+          </div>
+          <div class="diagram-caption">Figure 0.1: End-to-end system architecture illustrating the Offline Farmer Phone, Cloud PostGIS Data Tier, Dual Backend Services (FastAPI + Node.js), and Government Officer Command Center with the 9-step incident journey.</div>
+        </div>
+
+        <!-- Diagram 0.2: Complete Technology Stack Matrix -->
+        <div class="diagram-container" id="container-visual-techstack">
+          <div class="diagram-toolbar">
+            <span class="diagram-tag">Figure 0.2 &bull; Comprehensive Technology Stack Matrix</span>
+            <div class="diagram-btn-group">
+              <button class="btn-diag" onclick="zoomDiag('canvas-visual-techstack', 1.25)" title="Zoom In">🔍 +</button>
+              <button class="btn-diag" onclick="zoomDiag('canvas-visual-techstack', 0.8)" title="Zoom Out">🔍 −</button>
+              <button class="btn-diag" onclick="resetDiag('canvas-visual-techstack')" title="Reset View">↺ Reset</button>
+              <button class="btn-diag" onclick="openFullscreenDiag('canvas-visual-techstack', 'Figure 0.2 • Comprehensive Technology Stack Matrix')" title="Expand Fullscreen">⛶ Fullscreen</button>
+              <a href="assets/krishirakshak_tech_stack_v2.svg" target="_blank" rel="noopener noreferrer" class="btn-diag" title="Open Vector SVG in New Tab" style="text-decoration:none;">↗ Open SVG</a>
+            </div>
+          </div>
+          <div class="diagram-scroll-window large-window" id="window-visual-techstack">
+            <div class="diagram-canvas" id="canvas-visual-techstack">
+              <img src="assets/krishirakshak_tech_stack_v2.svg" onerror="this.onerror=null; this.src='krishirakshak_tech_stack_v2.svg';" alt="KrishiRakshak Technology Stack Matrix" draggable="false" />
+            </div>
+          </div>
+          <div class="diagram-caption">Figure 0.2: Full stack matrix detailing the offline model pipeline (PyTorch, YOLOv8n, EfficientNet-Lite0 INT8), client runtime (React Native 0.74, Hermes, WatermelonDB SQLite), cloud infrastructure (PostgreSQL 15 + PostGIS 3.3, S3), scientific computing engines, and surveillance dashboard.</div>
+        </div>
+      </section>
 
       <!-- Section 1: Executive Summary -->
       <section class="section" id="executive-summary">
@@ -984,56 +1094,11 @@
           The system spans three interconnected production tiers: the <strong>Offline Mobile Edge Client</strong>, the <strong>Central Cloud Infrastructure</strong> (Supabase PostgreSQL + PostGIS), and the <strong>Government Command Center with Hybrid Decoupled Backends</strong>.
         </p>
 
-        <!-- Visual Blueprints Subsection (High-Resolution Vector Diagrams) -->
-        <div id="visual-blueprints" style="display: flex; flex-direction: column; gap: 1.75rem; margin-top: 0.5rem; margin-bottom: 1.5rem;">
-          
-          <div class="callout callout-accent" style="margin-bottom: 0;">
-            <div class="callout-title">🗺️ Visual Architectural Blueprints (Executive &amp; Reviewer Overview)</div>
-            <p>
-              For rapid evaluation, clarity, and presentation review, the high-resolution vector blueprints below illustrate KrishiRakshak's distributed architecture and full technology stack at a glance, providing an immediate, easy-to-read alternative to raw textual flowcharts.
-            </p>
-          </div>
-
-          <!-- Diagram 2.0A: System Architecture Blueprint -->
-          <div class="diagram-container" id="container-visual-arch">
-            <div class="diagram-toolbar">
-              <span class="diagram-tag">Figure 2.0A &bull; System Architecture Blueprint &amp; 9-Step Report Flow</span>
-              <div class="diagram-btn-group">
-                <button class="btn-diag" onclick="zoomDiag('canvas-visual-arch', 1.25)" title="Zoom In">🔍 +</button>
-                <button class="btn-diag" onclick="zoomDiag('canvas-visual-arch', 0.8)" title="Zoom Out">🔍 −</button>
-                <button class="btn-diag" onclick="resetDiag('canvas-visual-arch')" title="Reset View">↺ Reset</button>
-                <button class="btn-diag" onclick="openFullscreenDiag('canvas-visual-arch', 'Figure 2.0A • System Architecture Blueprint &amp; 9-Step Report Journey')" title="Expand Fullscreen">⛶ Fullscreen</button>
-                <a href="assets/krishirakshak_architecture_v9.svg" target="_blank" rel="noopener noreferrer" class="btn-diag" title="Open Vector SVG in New Tab" style="text-decoration:none;">↗ Open SVG</a>
-              </div>
-            </div>
-            <div class="diagram-scroll-window large-window" id="window-visual-arch">
-              <div class="diagram-canvas" id="canvas-visual-arch">
-                <img src="assets/krishirakshak_architecture_v9.svg" onerror="this.onerror=null; this.src='krishirakshak_architecture_v9.svg';" alt="KrishiRakshak System Architecture Diagram" draggable="false" style="user-select: none; -webkit-user-drag: none; pointer-events: none; width: 100%; max-width: 1400px; height: auto; display: block; margin: 0 auto; border-radius: 6px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);" />
-              </div>
-            </div>
-            <div class="diagram-caption">Figure 2.0A: End-to-end system architecture illustrating the Offline Farmer Phone, Cloud PostGIS Data Tier, Dual Backend Services (FastAPI + Node.js), and Government Officer Command Center with the 9-step incident journey.</div>
-          </div>
-
-          <!-- Diagram 2.0B: Complete Technology Stack Matrix -->
-          <div class="diagram-container" id="container-visual-techstack">
-            <div class="diagram-toolbar">
-              <span class="diagram-tag">Figure 2.0B &bull; Comprehensive Technology Stack Matrix</span>
-              <div class="diagram-btn-group">
-                <button class="btn-diag" onclick="zoomDiag('canvas-visual-techstack', 1.25)" title="Zoom In">🔍 +</button>
-                <button class="btn-diag" onclick="zoomDiag('canvas-visual-techstack', 0.8)" title="Zoom Out">🔍 −</button>
-                <button class="btn-diag" onclick="resetDiag('canvas-visual-techstack')" title="Reset View">↺ Reset</button>
-                <button class="btn-diag" onclick="openFullscreenDiag('canvas-visual-techstack', 'Figure 2.0B • Comprehensive Technology Stack Matrix')" title="Expand Fullscreen">⛶ Fullscreen</button>
-                <a href="assets/krishirakshak_tech_stack_v2.svg" target="_blank" rel="noopener noreferrer" class="btn-diag" title="Open Vector SVG in New Tab" style="text-decoration:none;">↗ Open SVG</a>
-              </div>
-            </div>
-            <div class="diagram-scroll-window large-window" id="window-visual-techstack">
-              <div class="diagram-canvas" id="canvas-visual-techstack">
-                <img src="assets/krishirakshak_tech_stack_v2.svg" onerror="this.onerror=null; this.src='krishirakshak_tech_stack_v2.svg';" alt="KrishiRakshak Technology Stack Matrix" draggable="false" style="user-select: none; -webkit-user-drag: none; pointer-events: none; width: 100%; max-width: 1400px; height: auto; display: block; margin: 0 auto; border-radius: 6px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);" />
-              </div>
-            </div>
-            <div class="diagram-caption">Figure 2.0B: Full stack matrix detailing the offline model pipeline (PyTorch, YOLOv8n, EfficientNet-Lite0 INT8), client runtime (React Native 0.74, Hermes, WatermelonDB SQLite), cloud infrastructure (PostgreSQL 15 + PostGIS 3.3, S3), scientific computing engines, and surveillance dashboard.</div>
-          </div>
-
+        <div class="callout callout-accent" style="margin-bottom: 0.75rem;">
+          <div class="callout-title">🗺️ Master Visual Blueprints Available</div>
+          <p>
+            For high-resolution vector architectural diagrams and the complete technology stack matrix, see <a href="#visual-blueprints" style="color: #60a5fa; font-weight: 600;">Figure 0.1 &amp; Figure 0.2 at the top of this specification</a>. The formal code-level topologies and sequential execution flows are detailed below:
+          </p>
         </div>
 
         <h3 class="subsection-title" id="structural-topology" style="margin-top: 1rem;">2.1 Multi-Tier Structural Topology</h3>
@@ -2159,45 +2224,79 @@ sequenceDiagram
   <!-- Floating Back to Top Button -->
   <a href="#" class="back-to-top" title="Back to top">↑</a>
 
-  <!-- Complete Script: Robust Pan-Zoom Controller & Interactive Plume Simulation -->
+  <!-- Complete Script: Robust 2D Pan-Zoom Controller & Interactive Plume Simulation -->
   <script>
-    // State storage for diagram zoom levels
-    const diagramScales = {};
+    // State storage for diagram pan-zoom (Scale & 2D Translation)
+    const diagState = {};
+    let modalState = { scale: 1.5, x: 0, y: 0 };
+
+    function getCanvasState(canvasId) {
+      if (!diagState[canvasId]) {
+        diagState[canvasId] = { scale: 1.0, x: 0, y: 0 };
+      }
+      return diagState[canvasId];
+    }
+
+    function updateCanvasTransform(canvasId, animate = true) {
+      const canvas = document.getElementById(canvasId);
+      const state = getCanvasState(canvasId);
+      if (!canvas) return;
+      canvas.style.transition = animate ? 'transform 0.12s ease-out' : 'none';
+      canvas.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
+    }
 
     function zoomDiag(canvasId, factor) {
-      const el = document.getElementById(canvasId);
-      if (!el) return;
-      if (!diagramScales[canvasId]) diagramScales[canvasId] = 1;
-      diagramScales[canvasId] = Math.max(0.4, Math.min(4.0, diagramScales[canvasId] * factor));
-      el.style.transform = `scale(${diagramScales[canvasId]})`;
+      const state = getCanvasState(canvasId);
+      state.scale = Math.max(0.4, Math.min(6.0, state.scale * factor));
+      updateCanvasTransform(canvasId, true);
     }
 
     function resetDiag(canvasId) {
-      const el = document.getElementById(canvasId);
-      if (!el) return;
-      diagramScales[canvasId] = 1;
-      el.style.transform = 'scale(1)';
-      const win = el.parentElement;
-      if (win) {
-        win.scrollLeft = 0;
-        win.scrollTop = 0;
-      }
+      const state = getCanvasState(canvasId);
+      state.scale = 1.0;
+      state.x = 0;
+      state.y = 0;
+      updateCanvasTransform(canvasId, true);
     }
 
-    // Modal Fullscreen
-    let modalScale = 1.0;
+    // Modal Fullscreen Controls
     const modal = document.getElementById('diag-modal');
+    const modalBody = document.getElementById('diag-modal-body');
     const modalSvgContainer = document.getElementById('modal-svg-container');
     const modalTitle = document.getElementById('modal-diagram-title');
     const modalClose = document.getElementById('modal-close');
+
+    function updateModalTransform(animate = true) {
+      if (!modalSvgContainer) return;
+      modalSvgContainer.style.transition = animate ? 'transform 0.12s ease-out' : 'none';
+      modalSvgContainer.style.transform = `translate(${modalState.x}px, ${modalState.y}px) scale(${modalState.scale})`;
+    }
 
     function openFullscreenDiag(canvasId, title) {
       const srcCanvas = document.getElementById(canvasId);
       if (!srcCanvas) return;
       modalTitle.innerText = title;
       modalSvgContainer.innerHTML = srcCanvas.innerHTML;
-      modalScale = 1.1;
-      modalSvgContainer.style.transform = `scale(${modalScale})`;
+
+      // Expand SVGs and images for high legibility in modal
+      modalSvgContainer.querySelectorAll('svg').forEach(s => {
+        s.style.maxWidth = 'none';
+        s.style.width = '90vw';
+        s.style.minWidth = '1100px';
+        s.style.height = 'auto';
+        s.style.pointerEvents = 'none';
+      });
+      modalSvgContainer.querySelectorAll('img').forEach(im => {
+        im.style.maxWidth = 'none';
+        im.style.width = '92vw';
+        im.style.minWidth = '1200px';
+        im.style.height = 'auto';
+        im.style.pointerEvents = 'none';
+      });
+
+      // Opens comfortably zoomed IN (1.5x) so text is crisp and readable immediately
+      modalState = { scale: 1.5, x: 0, y: 0 };
+      updateModalTransform(true);
       modal.style.display = 'flex';
     }
 
@@ -2206,51 +2305,178 @@ sequenceDiagram
     });
 
     document.getElementById('modal-zoom-in').addEventListener('click', () => {
-      modalScale = Math.min(5.0, modalScale * 1.3);
-      modalSvgContainer.style.transform = `scale(${modalScale})`;
+      modalState.scale = Math.min(8.0, modalState.scale * 1.3);
+      updateModalTransform(true);
     });
 
     document.getElementById('modal-zoom-out').addEventListener('click', () => {
-      modalScale = Math.max(0.4, modalScale / 1.3);
-      modalSvgContainer.style.transform = `scale(${modalScale})`;
+      modalState.scale = Math.max(0.4, modalState.scale / 1.3);
+      updateModalTransform(true);
     });
 
     document.getElementById('modal-zoom-reset').addEventListener('click', () => {
-      modalScale = 1.0;
-      modalSvgContainer.style.transform = 'scale(1)';
+      modalState = { scale: 1.5, x: 0, y: 0 };
+      updateModalTransform(true);
     });
 
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.style.display === 'flex') {
-        modal.style.display = 'none';
+      if (modal.style.display === 'flex') {
+        if (e.key === 'Escape') modal.style.display = 'none';
+        if (e.key === '+' || e.key === '=') { modalState.scale = Math.min(8.0, modalState.scale * 1.2); updateModalTransform(true); }
+        if (e.key === '-' || e.key === '_') { modalState.scale = Math.max(0.4, modalState.scale / 1.2); updateModalTransform(true); }
+        if (e.key === '0') { modalState = { scale: 1.5, x: 0, y: 0 }; updateModalTransform(true); }
       }
     });
 
-    // Make diagram scroll-windows draggable
+    // Make modal draggable in 2D space
+    let modalDragging = false;
+    let modalStartX = 0, modalStartY = 0;
+    let modalOrigX = 0, modalOrigY = 0;
+
+    modalBody.addEventListener('mousedown', (e) => {
+      if (e.button !== 0) return;
+      modalDragging = true;
+      modalBody.style.cursor = 'grabbing';
+      modalStartX = e.clientX;
+      modalStartY = e.clientY;
+      modalOrigX = modalState.x;
+      modalOrigY = modalState.y;
+      e.preventDefault();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!modalDragging) return;
+      const dx = e.clientX - modalStartX;
+      const dy = e.clientY - modalStartY;
+      modalState.x = modalOrigX + dx;
+      modalState.y = modalOrigY + dy;
+      updateModalTransform(false);
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (modalDragging) {
+        modalDragging = false;
+        modalBody.style.cursor = 'grab';
+      }
+    });
+
+    // Modal touch pan & pinch
+    let modalTouchDist = 0;
+    let modalTouchScale = 1;
+    modalBody.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        modalDragging = true;
+        modalStartX = e.touches[0].clientX;
+        modalStartY = e.touches[0].clientY;
+        modalOrigX = modalState.x;
+        modalOrigY = modalState.y;
+      } else if (e.touches.length === 2) {
+        modalDragging = false;
+        const t1 = e.touches[0], t2 = e.touches[1];
+        modalTouchDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+        modalTouchScale = modalState.scale;
+      }
+    }, { passive: false });
+
+    modalBody.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 1 && modalDragging) {
+        const dx = e.touches[0].clientX - modalStartX;
+        const dy = e.touches[0].clientY - modalStartY;
+        modalState.x = modalOrigX + dx;
+        modalState.y = modalOrigY + dy;
+        updateModalTransform(false);
+        e.preventDefault();
+      } else if (e.touches.length === 2 && modalTouchDist > 0) {
+        const t1 = e.touches[0], t2 = e.touches[1];
+        const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+        modalState.scale = Math.max(0.4, Math.min(8.0, modalTouchScale * (dist / modalTouchDist)));
+        updateModalTransform(false);
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    modalBody.addEventListener('touchend', () => {
+      modalDragging = false;
+    });
+
+    // Make all in-page diagram scroll windows smoothly draggable in 2D space (left, right, up, down)
     document.querySelectorAll('.diagram-scroll-window').forEach(win => {
+      const canvas = win.querySelector('.diagram-canvas');
+      if (!canvas) return;
+      const canvasId = canvas.id;
+
       let isDown = false;
-      let startX, startY, scrollLeft, scrollTop;
+      let startX = 0, startY = 0;
+      let origX = 0, origY = 0;
 
       win.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return;
         isDown = true;
-        startX = e.pageX - win.offsetLeft;
-        startY = e.pageY - win.offsetTop;
-        scrollLeft = win.scrollLeft;
-        scrollTop = win.scrollTop;
+        win.style.cursor = 'grabbing';
+        startX = e.clientX;
+        startY = e.clientY;
+        const state = getCanvasState(canvasId);
+        origX = state.x;
+        origY = state.y;
+        e.preventDefault();
       });
 
-      win.addEventListener('mouseleave', () => { isDown = false; });
-      win.addEventListener('mouseup', () => { isDown = false; });
-
-      win.addEventListener('mousemove', (e) => {
+      window.addEventListener('mousemove', (e) => {
         if (!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - win.offsetLeft;
-        const y = e.pageY - win.offsetTop;
-        const walkX = (x - startX) * 1.5;
-        const walkY = (y - startY) * 1.5;
-        win.scrollLeft = scrollLeft - walkX;
-        win.scrollTop = scrollTop - walkY;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        const state = getCanvasState(canvasId);
+        state.x = origX + dx;
+        state.y = origY + dy;
+        updateCanvasTransform(canvasId, false);
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (isDown) {
+          isDown = false;
+          win.style.cursor = 'grab';
+        }
+      });
+
+      // Touch pan & pinch for in-page diagrams
+      let touchDist = 0;
+      let touchScale = 1;
+
+      win.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          isDown = true;
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+          const state = getCanvasState(canvasId);
+          origX = state.x;
+          origY = state.y;
+        } else if (e.touches.length === 2) {
+          isDown = false;
+          const t1 = e.touches[0], t2 = e.touches[1];
+          touchDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+          touchScale = getCanvasState(canvasId).scale;
+        }
+      }, { passive: true });
+
+      win.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 1 && isDown) {
+          const dx = e.touches[0].clientX - startX;
+          const dy = e.touches[0].clientY - startY;
+          const state = getCanvasState(canvasId);
+          state.x = origX + dx;
+          state.y = origY + dy;
+          updateCanvasTransform(canvasId, false);
+        } else if (e.touches.length === 2 && touchDist > 0) {
+          const t1 = e.touches[0], t2 = e.touches[1];
+          const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+          const state = getCanvasState(canvasId);
+          state.scale = Math.max(0.4, Math.min(6.0, touchScale * (dist / touchDist)));
+          updateCanvasTransform(canvasId, false);
+        }
+      }, { passive: true });
+
+      win.addEventListener('touchend', () => {
+        isDown = false;
       });
     });
 
