@@ -267,6 +267,103 @@
       line-height: 1.6;
     }
 
+    /* Video Embed Card */
+    .video-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 0.85rem;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .video-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .video-header h2 {
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .video-tag {
+      font-size: 0.8rem;
+      padding: 0.2rem 0.65rem;
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 9999px;
+      font-weight: 600;
+    }
+
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      height: 0;
+      overflow: hidden;
+      border-radius: 0.65rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #000;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .video-caption {
+      margin-top: 0.9rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Confusion Matrix Tabs & Controls */
+    .matrix-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin: 0.75rem 0 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .matrix-tab-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: #94a3b8;
+      padding: 0.55rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+
+    .matrix-tab-btn:hover {
+      background: rgba(59, 130, 246, 0.15);
+      border-color: #3b82f6;
+      color: #f3f4f6;
+    }
+
+    .matrix-tab-btn.active {
+      background: rgba(59, 130, 246, 0.25);
+      border-color: #60a5fa;
+      color: #ffffff;
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+    }
+
     /* Section Styling */
     .section {
       display: flex;
@@ -956,6 +1053,7 @@
     <aside class="sidebar">
       <div class="toc-title">Architecture Blueprint</div>
       <ul class="toc-list">
+        <li><a href="#video-deep-dive" class="toc-link" style="color: #f87171; font-weight: 600;">🎥 Video Architecture Deep Dive</a></li>
         <li><a href="#visual-blueprints" class="toc-link" style="color: #60a5fa; font-weight: 600;">★ Visual Architecture &amp; Stack</a></li>
         <li><a href="#executive-summary" class="toc-link">1. Executive Summary &amp; Two Loops</a></li>
         <li><a href="#system-topology" class="toc-link">2. Unified System Topology</a></li>
@@ -968,6 +1066,7 @@
         <li><a href="#offline-persistence" class="toc-link">7. WatermelonDB Offline Vault</a></li>
         <li><a href="#indic-accessibility" class="toc-link">8. Indic Audio &amp; Knowledge</a></li>
         <li><a href="#benchmarks" class="toc-link">9. Empirical Device Profiling</a></li>
+        <li style="padding-left: 0.85rem;"><a href="#confusion-matrices" class="toc-link" style="font-size: 0.8rem;">↳ 40-Class Confusion Matrices</a></li>
         <li><a href="#disease-taxonomy" class="toc-link">10. 40-Class Disease Taxonomy</a></li>
         <li><a href="#cloud-database" class="toc-link">11. Central PostGIS Data Tier</a></li>
         <li><a href="#spatial-hotspots" class="toc-link">12. Spatial Hotspot Clustering</a></li>
@@ -994,6 +1093,25 @@
           An exhaustive systems engineering specification detailing our offline-first edge AI diagnostic client, relational PostGIS surveillance tier, hybrid decoupled backend gateway, and mathematical epidemic dispersion engine.
         </p>
       </header>
+
+      <!-- Architecture Video Deep Dive (Embedded YouTube) -->
+      <section class="video-card" id="video-deep-dive" style="margin-bottom: 0.75rem;">
+        <div class="video-header">
+          <h2>🎥 System Architecture &amp; Engineering Deep Dive</h2>
+          <span class="video-tag">YouTube HD &bull; 5 Min Walkthrough</span>
+        </div>
+        <div class="video-wrapper">
+          <iframe 
+            src="https://www.youtube-nocookie.com/embed/-9zYMQSpFes?rel=0&amp;vq=hd1080" 
+            title="KrishiRakshak - Architecture Deep Dive &amp; Engineering Walkthrough" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen>
+          </iframe>
+        </div>
+        <p class="video-caption">
+          Technical walkthrough covering KrishiRakshak's Two-Loop architecture: sub-350ms on-device dual-model inference (YOLOv8n + EfficientNet-Lite0 INT8), deterministic hardware EXIF canonicalization, WatermelonDB offline SQLite synchronization, PostGIS spatial clustering, and atmospheric Gaussian plume epidemiological physics.
+        </p>
+      </section>
 
       <!-- Master Visual Architectural Blueprints (Full Width) -->
       <section class="section" id="visual-blueprints" style="position: relative; width: 100%; margin-bottom: 0.5rem;">
@@ -1599,6 +1717,125 @@ flowchart LR
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <!-- Subsection 9.2: 40-Class Confusion Matrices & Quantization Shift Analysis -->
+        <h3 class="subsection-title" id="confusion-matrices" style="margin-top: 1.75rem;">9.2 40-Class Empirical Confusion Matrices &amp; INT8 Quantization Shift Analysis</h3>
+        <p>
+          To rigorously evaluate diagnostic generalization and verify whether INT8 post-training quantization preserved clinical sensitivity across rural foliar pathologies, both the baseline unquantized PyTorch FP32 model and the edge-optimized TFLite INT8 runtime were profiled on a fixed, shared holdout set of <strong>10,000 empirical agricultural field images</strong> encompassing all 40 registered disease and healthy cohorts.
+        </p>
+
+        <!-- Confusion Matrix KPI Grid -->
+        <div class="metric-grid" style="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); margin-bottom: 1.25rem;">
+          <div class="metric-card" style="border-left: 3px solid #3b82f6;">
+            <div class="metric-num" style="color: #60a5fa;">98.23%</div>
+            <div class="metric-desc">FP32 PyTorch Accuracy</div>
+            <span style="font-size: 0.75rem; color: #94a3b8; font-family: monospace; display: block; margin-top: 0.25rem;">Macro-F1: 0.9834 • 10,000 Images</span>
+          </div>
+          <div class="metric-card" style="border-left: 3px solid #10b981;">
+            <div class="metric-num" style="color: #34d399;">97.33%</div>
+            <div class="metric-desc">INT8 TFLite Accuracy</div>
+            <span style="font-size: 0.75rem; color: #94a3b8; font-family: monospace; display: block; margin-top: 0.25rem;">Macro-F1: 0.9751 • 10,000 Images</span>
+          </div>
+          <div class="metric-card" style="border-left: 3px solid #f59e0b;">
+            <div class="metric-num" style="color: #fbbf24;">-0.90%</div>
+            <div class="metric-desc">Quantization Accuracy Shift</div>
+            <span style="font-size: 0.75rem; color: #94a3b8; font-family: monospace; display: block; margin-top: 0.25rem;">Macro-F1 Drop: -0.0083 (&lt; 0.85%)</span>
+          </div>
+          <div class="metric-card" style="border-left: 3px solid #8b5cf6;">
+            <div class="metric-num" style="color: #a78bfa;">75.0%</div>
+            <div class="metric-desc">Model Weight Compression</div>
+            <span style="font-size: 0.75rem; color: #94a3b8; font-family: monospace; display: block; margin-top: 0.25rem;">18.8 MB → 4.7 MB (Zero Float HW)</span>
+          </div>
+        </div>
+
+        <!-- Interactive Tab Switcher -->
+        <div class="matrix-tabs">
+          <button class="matrix-tab-btn active" data-matrix="fp32" onclick="switchMatrixTab('fp32')">
+            <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#3b82f6;"></span>
+            🔵 FP32 PyTorch Baseline (98.23%)
+          </button>
+          <button class="matrix-tab-btn" data-matrix="int8" onclick="switchMatrixTab('int8')">
+            <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981;"></span>
+            🟢 INT8 TFLite Quantized (97.33%)
+          </button>
+          <button class="matrix-tab-btn" data-matrix="delta" onclick="switchMatrixTab('delta')">
+            <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#ef4444;"></span>
+            🔴 Quantization Shift Delta (INT8 − FP32)
+          </button>
+          <button class="matrix-tab-btn" data-matrix="all" onclick="switchMatrixTab('all')">
+            📑 View All 3 Sequentially
+          </button>
+        </div>
+
+        <!-- Matrix 1: FP32 Baseline Confusion Matrix -->
+        <div class="diagram-container matrix-container" id="container-matrix-fp32" style="display: block;">
+          <div class="diagram-toolbar">
+            <span class="diagram-tag">Figure 9.2A &bull; FP32 (PyTorch) 40-Class Confusion Matrix (Accuracy: 98.23% | Macro-F1: 0.9834)</span>
+            <div class="diagram-btn-group">
+              <button class="btn-diag" onclick="zoomDiag('canvas-matrix-fp32', 1.25)" title="Zoom In">🔍 +</button>
+              <button class="btn-diag" onclick="zoomDiag('canvas-matrix-fp32', 0.8)" title="Zoom Out">🔍 −</button>
+              <button class="btn-diag" onclick="resetDiag('canvas-matrix-fp32')" title="Reset View">↺ Reset</button>
+              <button class="btn-diag" onclick="openFullscreenDiag('canvas-matrix-fp32', 'Figure 9.2A • FP32 (PyTorch) 40-Class Confusion Matrix (98.23% Accuracy | 10,000 Images)')" title="Expand Fullscreen">⛶ Fullscreen</button>
+              <a href="assets/confusion_matrix_fp32.png" target="_blank" rel="noopener noreferrer" class="btn-diag" title="Open Full PNG in New Tab" style="text-decoration:none;">↗ Open PNG</a>
+            </div>
+          </div>
+          <div class="diagram-scroll-window large-window" id="window-matrix-fp32" style="min-height: 520px; max-height: 750px;">
+            <div class="diagram-canvas" id="canvas-matrix-fp32">
+              <img src="assets/confusion_matrix_fp32.png" onerror="this.onerror=null; this.src='confusion_matrix_fp32.png';" alt="FP32 PyTorch 40-Class Confusion Matrix" draggable="false" style="max-width: 95%; height: auto;" />
+            </div>
+          </div>
+          <div class="diagram-caption">Figure 9.2A: Baseline full-precision FP32 PyTorch confusion matrix across 10,000 validation images. Strong diagonal dominance (&gt;95% per-row accuracy across nearly all 40 cohorts) verifies high diagnostic sensitivity prior to edge quantization.</div>
+        </div>
+
+        <!-- Matrix 2: INT8 Edge Quantized Confusion Matrix -->
+        <div class="diagram-container matrix-container" id="container-matrix-int8" style="display: none;">
+          <div class="diagram-toolbar">
+            <span class="diagram-tag">Figure 9.2B &bull; INT8 (TFLite) 40-Class Confusion Matrix (Accuracy: 97.33% | Macro-F1: 0.9751)</span>
+            <div class="diagram-btn-group">
+              <button class="btn-diag" onclick="zoomDiag('canvas-matrix-int8', 1.25)" title="Zoom In">🔍 +</button>
+              <button class="btn-diag" onclick="zoomDiag('canvas-matrix-int8', 0.8)" title="Zoom Out">🔍 −</button>
+              <button class="btn-diag" onclick="resetDiag('canvas-matrix-int8')" title="Reset View">↺ Reset</button>
+              <button class="btn-diag" onclick="openFullscreenDiag('canvas-matrix-int8', 'Figure 9.2B • INT8 (TFLite) 40-Class Confusion Matrix (97.33% Accuracy | 10,000 Images)')" title="Expand Fullscreen">⛶ Fullscreen</button>
+              <a href="assets/confusion_matrix_int8.png" target="_blank" rel="noopener noreferrer" class="btn-diag" title="Open Full PNG in New Tab" style="text-decoration:none;">↗ Open PNG</a>
+            </div>
+          </div>
+          <div class="diagram-scroll-window large-window" id="window-matrix-int8" style="min-height: 520px; max-height: 750px;">
+            <div class="diagram-canvas" id="canvas-matrix-int8">
+              <img src="assets/confusion_matrix_int8.png" onerror="this.onerror=null; this.src='confusion_matrix_int8.png';" alt="INT8 TFLite 40-Class Confusion Matrix" draggable="false" style="max-width: 95%; height: auto;" />
+            </div>
+          </div>
+          <div class="diagram-caption">Figure 9.2B: On-device INT8 symmetric quantized model confusion matrix on the identical 10,000-image holdout set. Slashes inference latency to &lt;30 ms and model weight by 75% while maintaining a stellar 97.33% accuracy and 0.9751 Macro-F1.</div>
+        </div>
+
+        <!-- Matrix 3: Quantization Shift Delta Matrix -->
+        <div class="diagram-container matrix-container" id="container-matrix-delta" style="display: none;">
+          <div class="diagram-toolbar">
+            <span class="diagram-tag">Figure 9.2C &bull; Change After Quantization (INT8 − FP32 Counts Divergence Matrix)</span>
+            <div class="diagram-btn-group">
+              <button class="btn-diag" onclick="zoomDiag('canvas-matrix-delta', 1.25)" title="Zoom In">🔍 +</button>
+              <button class="btn-diag" onclick="zoomDiag('canvas-matrix-delta', 0.8)" title="Zoom Out">🔍 −</button>
+              <button class="btn-diag" onclick="resetDiag('canvas-matrix-delta')" title="Reset View">↺ Reset</button>
+              <button class="btn-diag" onclick="openFullscreenDiag('canvas-matrix-delta', 'Figure 9.2C • Quantization Shift Delta Matrix (INT8 − FP32 Counts)')" title="Expand Fullscreen">⛶ Fullscreen</button>
+              <a href="assets/confusion_matrix_quantization_delta.png" target="_blank" rel="noopener noreferrer" class="btn-diag" title="Open Full PNG in New Tab" style="text-decoration:none;">↗ Open PNG</a>
+            </div>
+          </div>
+          <div class="diagram-scroll-window large-window" id="window-matrix-delta" style="min-height: 520px; max-height: 750px;">
+            <div class="diagram-canvas" id="canvas-matrix-delta">
+              <img src="assets/confusion_matrix_quantization_delta.png" onerror="this.onerror=null; this.src='confusion_matrix_quantization_delta.png';" alt="INT8 minus FP32 Quantization Shift Matrix" draggable="false" style="max-width: 95%; height: auto;" />
+            </div>
+          </div>
+          <div class="diagram-caption">Figure 9.2C: Exact count divergence matrix (INT8 minus FP32 counts). Diagonal: Red indicates gain in correct samples, Blue indicates loss. Off-diagonal: Red highlights new confusions introduced by 8-bit dynamic range clamping. Overall shift is non-systemic across all 40 cohorts.</div>
+        </div>
+
+        <!-- Analytical Breakdown Callouts -->
+        <div class="callout callout-accent" style="margin-top: 1.25rem;">
+          <div class="callout-title">🔍 Analytical Findings from Quantization Profiling</div>
+          <ul style="margin-top: 0.5rem; gap: 0.5rem;">
+            <li><strong>Principal Diagonal Dominance:</strong> Both FP32 and INT8 heatmaps show stark diagonal concentration. Out of 40 classes, 36 exhibit less than 3 samples of count drift after quantization, establishing that the 75% weight compression preserved learned feature boundaries.</li>
+            <li><strong>Isolated Off-Diagonal Dispersion:</strong> As revealed by the divergence matrix (Figure 9.2C), the minor 0.90% accuracy drop is concentrated entirely within biologically adjacent symptoms of the same crop (e.g. <em>Sugarcane Caterpillar</em> vs. <em>Diabrotica speciosa</em>, and <em>Tomato Target Spot</em> vs. <em>Septoria Leaf Spot</em>).</li>
+            <li><strong>Architectural Mitigations in Production:</strong> These fine-grained ambiguities are safely handled by KrishiRakshak's production safeguards: the <strong>Poaceae Logit-Masking Guardrail (§6.2)</strong> eliminates cross-crop confusion, while the <strong>Human-in-the-Loop Review Queue (§8.4)</strong> diverts any low-confidence diagnosis ($P &lt; 0.70$) to agricultural officers before chemical advice is rendered.</li>
+          </ul>
         </div>
       </section>
 
@@ -2479,6 +2716,30 @@ sequenceDiagram
         isDown = false;
       });
     });
+
+    // Confusion Matrix Interactive Tab Switcher
+    function switchMatrixTab(tabName) {
+      const tabs = document.querySelectorAll('.matrix-tab-btn');
+      tabs.forEach(t => t.classList.remove('active'));
+      const activeBtn = document.querySelector(`.matrix-tab-btn[data-matrix="${tabName}"]`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const containers = {
+        fp32: document.getElementById('container-matrix-fp32'),
+        int8: document.getElementById('container-matrix-int8'),
+        delta: document.getElementById('container-matrix-delta')
+      };
+
+      if (tabName === 'all') {
+        Object.values(containers).forEach(c => { if (c) c.style.display = 'block'; });
+      } else {
+        Object.keys(containers).forEach(k => {
+          if (containers[k]) {
+            containers[k].style.display = (k === tabName) ? 'block' : 'none';
+          }
+        });
+      }
+    }
 
     // Initialize Mermaid Safely on Load
     document.addEventListener('DOMContentLoaded', () => {
