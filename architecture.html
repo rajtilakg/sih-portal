@@ -523,19 +523,24 @@
 
     .diagram-scroll-window {
       width: 100%;
-      min-height: 320px;
-      max-height: 720px;
+      min-height: 540px;
       overflow: hidden;
       background: #090e1a;
-      border-radius: 0.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      padding: 0;
+      border-radius: 0.6rem;
+      border: 1px solid rgba(59, 130, 246, 0.14);
+      padding: 1rem 1.25rem;
       cursor: grab;
       position: relative;
       user-select: none;
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.45);
+    }
+
+    .diagram-scroll-window.zoom-active {
+      border-color: rgba(59, 130, 246, 0.45);
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(59, 130, 246, 0.25);
     }
 
     .diagram-scroll-window:active {
@@ -543,7 +548,8 @@
     }
 
     .diagram-scroll-window.large-window {
-      max-height: 800px;
+      min-height: 600px;
+      max-height: 820px;
     }
 
     .diagram-canvas {
@@ -553,7 +559,7 @@
       width: 100%;
       min-width: 100%;
       height: 100%;
-      min-height: 320px;
+      min-height: 500px;
       transform-origin: center center;
       transition: transform 0.08s ease-out;
       text-align: center;
@@ -573,8 +579,10 @@
     }
 
     .diagram-canvas svg {
+      width: 100% !important;
+      height: 100% !important;
       max-width: 100% !important;
-      height: auto !important;
+      max-height: 100% !important;
       pointer-events: none;
     }
 
@@ -588,12 +596,22 @@
 
     /* Mermaid High-Contrast Crisp Overrides */
     .mermaid {
-      display: inline-block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
       text-align: center;
+      margin: 0;
     }
 
     .mermaid svg {
-      max-width: none !important;
+      width: 100% !important;
+      height: 100% !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
+      display: block;
+      margin: 0 auto;
       font-family: 'Inter', sans-serif !important;
     }
     
@@ -602,37 +620,38 @@
     .mermaid .node circle {
       fill: #1e293b !important;
       stroke: #3b82f6 !important;
-      stroke-width: 1.5px !important;
+      stroke-width: 1.75px !important;
     }
 
     .mermaid .node .label {
       color: #f8fafc !important;
       font-weight: 600 !important;
-      font-size: 13px !important;
+      font-size: 14px !important;
+      line-height: 1.35 !important;
     }
 
     .mermaid .cluster rect {
       fill: #0c1424 !important;
       stroke: #475569 !important;
-      stroke-width: 1.5px !important;
+      stroke-width: 1.75px !important;
     }
 
     .mermaid .cluster text {
       fill: #93c5fd !important;
       font-weight: 700 !important;
-      font-size: 13.5px !important;
+      font-size: 14.5px !important;
     }
 
     .mermaid .edgePath path {
       stroke: #60a5fa !important;
-      stroke-width: 1.75px !important;
+      stroke-width: 2px !important;
     }
 
     .mermaid .edgeLabel {
       background-color: #0b0f19 !important;
-      color: #cbd5e1 !important;
-      font-size: 11px !important;
-      padding: 2px 6px !important;
+      color: #e2e8f0 !important;
+      font-size: 12px !important;
+      padding: 3px 7px !important;
       border-radius: 4px !important;
       border: 1px solid #1f2937 !important;
     }
@@ -640,22 +659,24 @@
     .mermaid .actor {
       stroke: #3b82f6 !important;
       fill: #1e293b !important;
+      stroke-width: 1.75px !important;
     }
 
     .mermaid text.actor > tspan {
       fill: #f8fafc !important;
       font-weight: 600 !important;
-      font-size: 13px !important;
+      font-size: 13.5px !important;
     }
 
     .mermaid .messageText {
       fill: #e2e8f0 !important;
-      font-size: 12px !important;
+      font-size: 13px !important;
+      font-weight: 500 !important;
     }
 
     .mermaid .messageLine0, .mermaid .messageLine1 {
       stroke: #60a5fa !important;
-      stroke-width: 1.5px !important;
+      stroke-width: 1.75px !important;
     }
 
     .mermaid .note {
@@ -665,7 +686,7 @@
 
     .mermaid .noteText > tspan {
       fill: #fde68a !important;
-      font-size: 11px !important;
+      font-size: 12px !important;
     }
 
     /* Interactive Plume Simulation Widget */
@@ -1235,7 +1256,7 @@
               <button class="btn-diag" onclick="openFullscreenDiag('canvas-2-1', 'Figure 2.1 &bull; Unified Architectural Topology')" title="Expand Fullscreen">⛶ Fullscreen</button>
             </div>
           </div>
-          <div class="diagram-scroll-window" id="window-2-1">
+          <div class="diagram-scroll-window mermaid-window" id="window-2-1" style="min-height: 860px;">
             <div class="diagram-canvas" id="canvas-2-1">
               <pre class="mermaid">
 flowchart TD
@@ -1244,23 +1265,27 @@ flowchart TD
         MobileUI["Mobile UI Components\n• HomeDashboard.tsx (1-Tap Quick Grid)\n• ReportIssueView.tsx\n• SymptomEncyclopediaScreen.tsx"]
         
         subgraph LocalVault ["Offline Storage Vault"]
+            direction LR
             WDB[("WatermelonDB (SQLite)\nLocal Database with Client UUID")]
             AsyncCache[("AsyncStorage Local Cache\n• Mandi Prices • Weather 3-Day")]
         end
         
         subgraph EdgeML ["On-Device Edge ML Pipeline"]
+            direction LR
             EXIF["Hardware EXIF Canonicalization\n(Preserves 3.4M EffNet Parameters)"]
             YOLO["Stage 1: YOLOv8n INT8\nLeaf Localization (640x640)"]
             EffNet["Stage 2: EfficientNet-Lite0 INT8\nPathology Classifier (224x224)"]
             PestEngine["CIB-RC Dosage Calculation\n(Safe Dilution & Satchel Math)"]
+            EXIF --> YOLO --> EffNet --> PestEngine
         end
         
         MobileUI <--> WDB
         MobileUI <--> AsyncCache
-        MobileUI --> EXIF --> YOLO --> EffNet --> PestEngine
+        MobileUI --> EXIF
     end
 
     subgraph CloudTier ["Tier 2: Central Cloud & Geospatial Infrastructure (Supabase)"]
+        direction LR
         Postgres[("PostgreSQL 15 + PostGIS 3.3\n• public.field_reports (SRID 4326 Point)\n• public.profiles (RBAC)\n• public.api_telemetry")]
         PostgREST["PostgREST RESTful API Gateway"]
         S3Bucket["Supabase Storage S3 Bucket\n(/images/{user_id}/{report_id}.jpg)"]
@@ -1271,6 +1296,7 @@ flowchart TD
     end
 
     subgraph BackendTier ["Tier 3A: Hybrid Decoupled Backend Architecture"]
+        direction LR
         NodeGateway["Node.js Express BFF Gateway (Port 3000)\n• Non-Blocking Asynchronous I/O\n• Authentication & Session Tokens\n• Static Asset & Audio Serving"]
         
         FastAPICore["Python FastAPI Scientific Core (Port 8000)\n• NumPy / SciPy Gaussian Plume Advection\n• Growing Degree-Day (GDD) Phenology\n• PostGIS HEXEWKB Binary IEEE 754 Parsing"]
@@ -1280,6 +1306,7 @@ flowchart TD
     end
 
     subgraph CommandTier ["Tier 3B: Government Command Center (Vanilla ES6+)"]
+        direction TB
         UI_Dash["Executive Dashboard (dashboard.html)\nReal-time District KPIs & Outbreak Feed"]
         UI_Queue["Verification Queue (queue.html)\nHigh-Res Photo Review & DLT SMS Dispatch"]
         UI_Radar["Cadastral Plot Radar (radar.html)\nSub-Meter Farm Parcels (~35m) with Sentinel-2 NDVI"]
@@ -1315,7 +1342,7 @@ flowchart TD
               <button class="btn-diag" onclick="openFullscreenDiag('canvas-2-2', 'Figure 2.2 &bull; Diagnostic &amp; Surveillance Lifecycle')" title="Expand Fullscreen">⛶ Fullscreen</button>
             </div>
           </div>
-          <div class="diagram-scroll-window" id="window-2-2">
+          <div class="diagram-scroll-window mermaid-window" id="window-2-2" style="min-height: 820px;">
             <div class="diagram-canvas" id="canvas-2-2">
               <pre class="mermaid">
 sequenceDiagram
@@ -1379,23 +1406,34 @@ sequenceDiagram
               <button class="btn-diag" onclick="openFullscreenDiag('canvas-3-1', 'Figure 3.1 &bull; 1-Tap Quick Actions Architecture')" title="Expand Fullscreen">⛶ Fullscreen</button>
             </div>
           </div>
-          <div class="diagram-scroll-window" id="window-3-1">
+          <div class="diagram-scroll-window mermaid-window" id="window-3-1" style="min-height: 600px;">
             <div class="diagram-canvas" id="canvas-3-1">
               <pre class="mermaid">
 flowchart TD
-    Home["HomeDashboard View"] --> Loc["Location & Offline Sync Status Bar"]
-    Home --> Alert["Critical Outbreak Banner (Auto-filtered for District)"]
-    Home --> QuickActions["Quick Services (1-Tap Farmer Tools)"]
-    Home --> Weather["Live Weather & Agronomic Spray Window Status"]
-    Home --> Advisory["Primary Crop Advisory (Native TTS Audio)"]
+    Home["HomeDashboard View (React Native 0.74 / Hermes AOT)"]
 
-    subgraph QuickActions ["1-Tap Farmer Quick Actions Grid"]
-        direction LR
+    subgraph ContextLayer ["Real-Time Agronomic Context & Audio Layer"]
+        direction TB
+        Loc["Location & Offline Sync Status Bar"]
+        Alert["Critical Outbreak Banner\n(Auto-filtered for District)"]
+        Weather["Live Weather & Agronomic\nSpray Window Status"]
+        Advisory["Primary Crop Advisory\n(Native Indic TTS Audio)"]
+        Loc --> Alert
+        Weather --> Advisory
+    end
+
+    subgraph QuickActions ["1-Tap Farmer Quick Actions Grid (2x2 High-Urgency Matrix)"]
+        direction TB
         Slot1["Slot 1 (Top-Left, Amber Accent)\n📷 Report Crop Disease\nImmediate TFLite Diagnostic Trigger"]
         Slot2["Slot 2 (Top-Right)\n📈 Check Mandi Rates\nAPMC Real-time Price Tracker"]
         Slot3["Slot 3 (Bottom-Left)\n🚨 View Pest Alerts\nCommunity Outbreak Feed"]
         Slot4["Slot 4 (Bottom-Right)\n🧮 Pump Dosage Calculator\nKnapsack Spray Dilution"]
+        Slot1 --> Slot3
+        Slot2 --> Slot4
     end
+
+    Home --> ContextLayer
+    Home --> QuickActions
               </pre>
             </div>
           </div>
@@ -1427,16 +1465,24 @@ flowchart TD
               <button class="btn-diag" onclick="openFullscreenDiag('canvas-4-1', 'Figure 4.1 &bull; Two-Stage Edge Neural Flow')" title="Expand Fullscreen">⛶ Fullscreen</button>
             </div>
           </div>
-          <div class="diagram-scroll-window" id="window-4-1">
+          <div class="diagram-scroll-window mermaid-window" id="window-4-1" style="min-height: 560px;">
             <div class="diagram-canvas" id="canvas-4-1">
               <pre class="mermaid">
-flowchart LR
-    RawPhoto["Raw Camera Frame\n(Full Resolution JPEG)"] --> EXIF["Deterministic EXIF Rule\n(Hardware Rotation Matrix)"]
-    EXIF --> Stage1["Stage 1: YOLOv8n INT8\nLeaf Localization (640x640)"]
-    Stage1 --> Crop["Sub-Tensor Crop\n(Tight Leaf ROI Box)"]
-    Crop --> Stage2["Stage 2: EffNet-Lite0 INT8\nPathology Classifier (224x224)"]
-    Stage2 --> LogitMask["Logit Masking Guardrail\n(Poaceae / Selected Crop Filter)"]
-    LogitMask --> Dosage["CIB-RC Dosage Engine\n(Active Ingredient Math)"]
+flowchart TD
+    subgraph Stage1Tier ["Stage 1: Hardware Canonicalization & Spatial ROI Localization"]
+        direction LR
+        RawPhoto["Raw Camera Frame\n(Full Resolution JPEG)"] --> EXIF["Deterministic EXIF Rule\n(Hardware Rotation Matrix)"]
+        EXIF --> Stage1["Stage 1: YOLOv8n INT8\nLeaf Localization (640x640)"]
+        Stage1 --> Crop["Sub-Tensor Crop\n(Tight Leaf ROI Box)"]
+    end
+
+    subgraph Stage2Tier ["Stage 2: Pathological Classification & Agronomic Guardrails"]
+        direction LR
+        Stage2["Stage 2: EffNet-Lite0 INT8\nPathology Classifier (224x224)"] --> LogitMask["Logit Masking Guardrail\n(Poaceae / Selected Crop Filter)"]
+        LogitMask --> Dosage["CIB-RC Dosage Engine\n(Active Ingredient Math)"]
+    end
+
+    Crop --> Stage2
               </pre>
             </div>
           </div>
@@ -1987,7 +2033,7 @@ flowchart LR
               <button class="btn-diag" onclick="openFullscreenDiag('canvas-13-1', 'Figure 13.1 &bull; Hybrid Decoupled Backend Lifecycle')" title="Expand Fullscreen">⛶ Fullscreen</button>
             </div>
           </div>
-          <div class="diagram-scroll-window" id="window-13-1">
+          <div class="diagram-scroll-window mermaid-window" id="window-13-1" style="min-height: 720px;">
             <div class="diagram-canvas" id="canvas-13-1">
               <pre class="mermaid">
 sequenceDiagram
@@ -2453,7 +2499,7 @@ sequenceDiagram
         </div>
       </div>
       <div class="diag-modal-body" id="diag-modal-body">
-        <div id="modal-svg-container" style="display: inline-block; transform-origin: top center; transition: transform 0.1s ease-out;"></div>
+        <div id="modal-svg-container"></div>
       </div>
     </div>
   </div>
@@ -2465,7 +2511,8 @@ sequenceDiagram
   <script>
     // State storage for diagram pan-zoom (Scale & 2D Translation)
     const diagState = {};
-    let modalState = { scale: 1.5, x: 0, y: 0 };
+    let modalState = { scale: 1.0, x: 0, y: 0 };
+    let activeWheelWin = null;
 
     function getCanvasState(canvasId) {
       if (!diagState[canvasId]) {
@@ -2474,18 +2521,56 @@ sequenceDiagram
       return diagState[canvasId];
     }
 
+    function updateZoomBadge(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const container = canvas.closest('.diagram-container');
+      if (!container) return;
+      let badge = container.querySelector('.zoom-level-badge');
+      if (!badge) {
+        const btnGroup = container.querySelector('.diagram-btn-group');
+        if (btnGroup) {
+          badge = document.createElement('span');
+          badge.className = 'zoom-level-badge';
+          badge.style.cssText = 'font-family: "JetBrains Mono", monospace; font-size: 0.75rem; color: #93c5fd; background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.28); padding: 0.28rem 0.55rem; border-radius: 0.35rem; display: inline-flex; align-items: center;';
+          btnGroup.insertBefore(badge, btnGroup.firstChild);
+        }
+      }
+      if (badge) {
+        const pct = Math.round(getCanvasState(canvasId).scale * 100);
+        badge.textContent = `${pct}%`;
+      }
+    }
+
     function updateCanvasTransform(canvasId, animate = true) {
       const canvas = document.getElementById(canvasId);
       const state = getCanvasState(canvasId);
       if (!canvas) return;
       canvas.style.transition = animate ? 'transform 0.12s ease-out' : 'none';
       canvas.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
+      updateZoomBadge(canvasId);
     }
 
-    function zoomDiag(canvasId, factor) {
+    function zoomDiag(canvasId, factor, clientX = null, clientY = null) {
+      const canvas = document.getElementById(canvasId);
+      const win = canvas ? canvas.closest('.diagram-scroll-window') : null;
       const state = getCanvasState(canvasId);
-      state.scale = Math.max(0.4, Math.min(6.0, state.scale * factor));
-      updateCanvasTransform(canvasId, true);
+      const oldScale = state.scale;
+      const newScale = Math.max(0.4, Math.min(8.0, oldScale * factor));
+      const ratio = newScale / oldScale;
+
+      if (win && clientX !== null && clientY !== null) {
+        const rect = win.getBoundingClientRect();
+        const ox = clientX - (rect.left + rect.width / 2);
+        const oy = clientY - (rect.top + rect.height / 2);
+        state.x = ox - (ox - state.x) * ratio;
+        state.y = oy - (oy - state.y) * ratio;
+      } else {
+        state.x *= ratio;
+        state.y *= ratio;
+      }
+      state.scale = newScale;
+      updateCanvasTransform(canvasId, clientX === null);
     }
 
     function resetDiag(canvasId) {
@@ -2507,6 +2592,29 @@ sequenceDiagram
       if (!modalSvgContainer) return;
       modalSvgContainer.style.transition = animate ? 'transform 0.12s ease-out' : 'none';
       modalSvgContainer.style.transform = `translate(${modalState.x}px, ${modalState.y}px) scale(${modalState.scale})`;
+      const resetBtn = document.getElementById('modal-zoom-reset');
+      if (resetBtn) {
+        resetBtn.textContent = `↺ Reset (${Math.round(modalState.scale * 100)}%)`;
+      }
+    }
+
+    function zoomModal(factor, clientX = null, clientY = null) {
+      const oldScale = modalState.scale;
+      const newScale = Math.max(0.4, Math.min(8.0, oldScale * factor));
+      const ratio = newScale / oldScale;
+
+      if (modalBody && clientX !== null && clientY !== null) {
+        const rect = modalBody.getBoundingClientRect();
+        const ox = clientX - (rect.left + rect.width / 2);
+        const oy = clientY - (rect.top + rect.height / 2);
+        modalState.x = ox - (ox - modalState.x) * ratio;
+        modalState.y = oy - (oy - modalState.y) * ratio;
+      } else {
+        modalState.x *= ratio;
+        modalState.y *= ratio;
+      }
+      modalState.scale = newScale;
+      updateModalTransform(clientX === null);
     }
 
     function openFullscreenDiag(canvasId, title) {
@@ -2515,24 +2623,34 @@ sequenceDiagram
       modalTitle.innerText = title;
       modalSvgContainer.innerHTML = srcCanvas.innerHTML;
 
-      // Expand SVGs and images for high legibility in modal
+      modalSvgContainer.querySelectorAll('.mermaid').forEach(m => {
+        m.style.width = '92vw';
+        m.style.height = '84vh';
+        m.style.display = 'flex';
+        m.style.alignItems = 'center';
+        m.style.justifyContent = 'center';
+        m.style.margin = '0';
+      });
+
+      // Expand SVGs and images to cleanly fill the fullscreen modal at 100% base scale
       modalSvgContainer.querySelectorAll('svg').forEach(s => {
-        s.style.maxWidth = 'none';
-        s.style.width = '90vw';
-        s.style.minWidth = '1100px';
-        s.style.height = 'auto';
+        s.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        s.style.maxWidth = '92vw';
+        s.style.maxHeight = '84vh';
+        s.style.width = '92vw';
+        s.style.height = '84vh';
         s.style.pointerEvents = 'none';
       });
       modalSvgContainer.querySelectorAll('img').forEach(im => {
-        im.style.maxWidth = 'none';
-        im.style.width = '92vw';
-        im.style.minWidth = '1200px';
+        im.style.maxWidth = '92vw';
+        im.style.maxHeight = '84vh';
+        im.style.width = 'auto';
         im.style.height = 'auto';
+        im.style.objectFit = 'contain';
         im.style.pointerEvents = 'none';
       });
 
-      // Opens comfortably zoomed IN (1.5x) so text is crisp and readable immediately
-      modalState = { scale: 1.5, x: 0, y: 0 };
+      modalState = { scale: 1.0, x: 0, y: 0 };
       updateModalTransform(true);
       modal.style.display = 'flex';
     }
@@ -2542,26 +2660,41 @@ sequenceDiagram
     });
 
     document.getElementById('modal-zoom-in').addEventListener('click', () => {
-      modalState.scale = Math.min(8.0, modalState.scale * 1.3);
-      updateModalTransform(true);
+      zoomModal(1.25);
     });
 
     document.getElementById('modal-zoom-out').addEventListener('click', () => {
-      modalState.scale = Math.max(0.4, modalState.scale / 1.3);
-      updateModalTransform(true);
+      zoomModal(0.8);
     });
 
     document.getElementById('modal-zoom-reset').addEventListener('click', () => {
-      modalState = { scale: 1.5, x: 0, y: 0 };
+      modalState = { scale: 1.0, x: 0, y: 0 };
       updateModalTransform(true);
     });
 
     window.addEventListener('keydown', (e) => {
       if (modal.style.display === 'flex') {
         if (e.key === 'Escape') modal.style.display = 'none';
-        if (e.key === '+' || e.key === '=') { modalState.scale = Math.min(8.0, modalState.scale * 1.2); updateModalTransform(true); }
-        if (e.key === '-' || e.key === '_') { modalState.scale = Math.max(0.4, modalState.scale / 1.2); updateModalTransform(true); }
-        if (e.key === '0') { modalState = { scale: 1.5, x: 0, y: 0 }; updateModalTransform(true); }
+        if (e.key === '+' || e.key === '=') { zoomModal(1.2); }
+        if (e.key === '-' || e.key === '_') { zoomModal(0.833); }
+        if (e.key === '0') { modalState = { scale: 1.0, x: 0, y: 0 }; updateModalTransform(true); }
+      }
+    });
+
+    // Modal mouse-wheel & double-click zoom
+    modalBody.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const factor = e.deltaY < 0 ? 1.14 : 0.88;
+      zoomModal(factor, e.clientX, e.clientY);
+    }, { passive: false });
+
+    modalBody.addEventListener('dblclick', (e) => {
+      e.preventDefault();
+      if (modalState.scale > 2.2) {
+        modalState = { scale: 1.0, x: 0, y: 0 };
+        updateModalTransform(true);
+      } else {
+        zoomModal(1.5, e.clientX, e.clientY);
       }
     });
 
@@ -2636,11 +2769,21 @@ sequenceDiagram
       modalDragging = false;
     });
 
-    // Make all in-page diagram scroll windows smoothly draggable in 2D space (left, right, up, down)
+    // Deactivate wheel-zoom capture when clicking outside any diagram window
+    document.addEventListener('mousedown', (e) => {
+      const clickedWin = e.target.closest('.diagram-scroll-window');
+      if (activeWheelWin && activeWheelWin !== clickedWin) {
+        activeWheelWin.classList.remove('zoom-active');
+        activeWheelWin = null;
+      }
+    });
+
+    // Make all in-page diagram scroll windows smoothly draggable and zoomable in 2D space
     document.querySelectorAll('.diagram-scroll-window').forEach(win => {
       const canvas = win.querySelector('.diagram-canvas');
       if (!canvas) return;
       const canvasId = canvas.id;
+      updateZoomBadge(canvasId);
 
       let isDown = false;
       let startX = 0, startY = 0;
@@ -2648,6 +2791,12 @@ sequenceDiagram
 
       win.addEventListener('mousedown', (e) => {
         if (e.button !== 0) return;
+        if (activeWheelWin && activeWheelWin !== win) {
+          activeWheelWin.classList.remove('zoom-active');
+        }
+        activeWheelWin = win;
+        win.classList.add('zoom-active');
+
         isDown = true;
         win.style.cursor = 'grabbing';
         startX = e.clientX;
@@ -2672,6 +2821,27 @@ sequenceDiagram
         if (isDown) {
           isDown = false;
           win.style.cursor = 'grab';
+        }
+      });
+
+      // Smooth wheel & trackpad-pinch zoom on in-page diagram windows
+      win.addEventListener('wheel', (e) => {
+        const state = getCanvasState(canvasId);
+        const isInteractive = (activeWheelWin === win) || e.ctrlKey || e.metaKey || Math.abs(state.scale - 1.0) > 0.01;
+        if (!isInteractive) return;
+        e.preventDefault();
+        const factor = e.deltaY < 0 ? 1.14 : 0.88;
+        zoomDiag(canvasId, factor, e.clientX, e.clientY);
+      }, { passive: false });
+
+      // Double-click to zoom in at cursor (or reset if zoomed in far)
+      win.addEventListener('dblclick', (e) => {
+        e.preventDefault();
+        const state = getCanvasState(canvasId);
+        if (state.scale > 2.2) {
+          resetDiag(canvasId);
+        } else {
+          zoomDiag(canvasId, 1.5, e.clientX, e.clientY);
         }
       });
 
@@ -2707,7 +2877,7 @@ sequenceDiagram
           const t1 = e.touches[0], t2 = e.touches[1];
           const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
           const state = getCanvasState(canvasId);
-          state.scale = Math.max(0.4, Math.min(6.0, touchScale * (dist / touchDist)));
+          state.scale = Math.max(0.4, Math.min(8.0, touchScale * (dist / touchDist)));
           updateCanvasTransform(canvasId, false);
         }
       }, { passive: true });
@@ -2741,15 +2911,74 @@ sequenceDiagram
       }
     }
 
-    // Initialize Mermaid Safely on Load
+    // Auto-fit rendered Mermaid SVGs so they tightly and prominently occupy their diagram boxes
+    function fitMermaidDiagrams() {
+      document.querySelectorAll('.diagram-scroll-window').forEach(win => {
+        const svg = win.querySelector('.mermaid svg');
+        const canvas = win.querySelector('.diagram-canvas');
+        if (!svg || !canvas) return;
+
+        try {
+          if (!svg.dataset.tightened) {
+            const bbox = svg.getBBox();
+            if (bbox && bbox.width > 0 && bbox.height > 0) {
+              const pad = 16;
+              svg.setAttribute('viewBox', `${(bbox.x - pad).toFixed(1)} ${(bbox.y - pad).toFixed(1)} ${(bbox.width + pad * 2).toFixed(1)} ${(bbox.height + pad * 2).toFixed(1)}`);
+              svg.dataset.tightened = 'true';
+            }
+          }
+        } catch (err) {
+          // Ignore getBBox errors if element is not yet in layout
+        }
+
+        svg.style.removeProperty('max-width');
+        svg.setAttribute('width', '100%');
+        svg.setAttribute('height', '100%');
+        svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        svg.style.width = '100%';
+        svg.style.height = '100%';
+        svg.style.maxWidth = '100%';
+        svg.style.maxHeight = '100%';
+
+        const vb = svg.viewBox && svg.viewBox.baseVal;
+        if (vb && vb.width > 0 && vb.height > 0) {
+          const availWidth = Math.max(640, win.clientWidth - 36);
+          const aspect = vb.height / vb.width;
+          const minH = parseInt(win.style.minHeight || '560', 10) || 560;
+          const computedHeight = Math.round(availWidth * aspect + 32);
+          const finalHeight = Math.max(minH, Math.min(980, computedHeight));
+          win.style.height = `${finalHeight}px`;
+          canvas.style.height = `${finalHeight - 24}px`;
+        }
+      });
+    }
+
+    // Initialize Mermaid Safely on Load & Auto-Fit Diagrams
     document.addEventListener('DOMContentLoaded', () => {
       mermaid.initialize({
-        startOnLoad: true,
+        startOnLoad: false,
         theme: 'dark',
         securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          nodeSpacing: 42,
+          rankSpacing: 52,
+          padding: 16,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: false,
+          width: 185,
+          height: 52,
+          boxMargin: 12,
+          messageMargin: 38,
+          mirrorActors: true
+        },
         themeVariables: {
           darkMode: true,
           background: '#090e1a',
+          fontSize: '14px',
           primaryColor: '#1e293b',
           primaryTextColor: '#f8fafc',
           primaryBorderColor: '#3b82f6',
@@ -2759,6 +2988,17 @@ sequenceDiagram
           clusterBkg: '#0c1424',
           clusterBorder: '#475569'
         }
+      });
+
+      mermaid.run({ querySelector: '.mermaid' }).then(() => {
+        fitMermaidDiagrams();
+        setTimeout(fitMermaidDiagrams, 150);
+      }).catch(() => {
+        setTimeout(fitMermaidDiagrams, 300);
+      });
+
+      window.addEventListener('resize', () => {
+        fitMermaidDiagrams();
       });
 
       // Initialize the Plume Simulator
